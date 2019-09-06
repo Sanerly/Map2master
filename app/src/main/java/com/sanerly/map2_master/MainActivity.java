@@ -1,12 +1,12 @@
 package com.sanerly.map2_master;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
