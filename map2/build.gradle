@@ -25,24 +25,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    compileOnly  'com.android.support:appcompat-v7:28.0.3'
+    compileOnly 'com.android.support:appcompat-v7:28.0.3'
     //map 高德 3D地图so及jar
-    api ('com.amap.api:3dmap:latest.integration'){
+    implementation('com.amap.api:3dmap:latest.integration') {
         exclude group: 'com.android.support'
     }
     //google地图
-    api ('com.google.maps.android:android-maps-utils:0.4.4'){
+    implementation('com.google.maps.android:android-maps-utils:0.4.4') {
         exclude group: 'com.android.support'
     }
-    api ('com.google.android.gms:play-services-maps:17.0.0'){
+    implementation('com.google.android.gms:play-services-maps:17.0.0') {
         exclude group: 'com.android.support'
     }
 }
 task makeJar(type: Copy) {
-    delete 'build/outputs/libs/map2.jar' //删除已经存在的jar包
-    from('build/intermediates/intermediate-jars/release/')//从该目录下加载要打包的文件
+    delete 'build/outputs/libs/map2-1.0.0.jar' //删除已经存在的jar包
+    from('build/intermediates/packaged-classes/release/')//从该目录下加载要打包的文件
     into('build/outputs/libs/')//jar包的保存目录
     include('classes.jar')//设置过滤，只打包classes文件
-    rename('classes.jar', 'map2.jar')//重命名，mylibrary.jar 根据自己的需求设置
+    rename('classes.jar', 'map2-1.0.0.jar')//重命名，mylibrary.jar 根据自己的需求设置
 }
 makeJar.dependsOn(build)
