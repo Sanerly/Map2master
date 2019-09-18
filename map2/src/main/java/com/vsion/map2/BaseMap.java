@@ -122,14 +122,31 @@ public abstract class BaseMap {
         return this;
     }
 
+
+    /**
+     * 设置地图的默认UI
+     */
+    public BaseMap setUiSettings(MapUiSettings uiSettings) {
+        this.uiSettings(uiSettings);
+        return this;
+    }
+
+    /**
+     * 设置地图点击监听
+     */
     public BaseMap setOnMapClickListener(OnMapClickListener listener) {
         this.onMapClickListener = listener;
         return this;
     }
 
+
+    /**
+     * 地图点击监听
+     */
     public interface OnMapClickListener {
         void onMapClick(LngLat lngLat);
     }
+
 
     /**
      * 开始构建
@@ -188,6 +205,9 @@ public abstract class BaseMap {
      * 旋转
      */
     public abstract void onRotate(float orientation);
+
+
+    protected abstract void uiSettings(MapUiSettings settings);
 
 
     /**

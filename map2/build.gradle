@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.2"
     }
 
     buildTypes {
@@ -25,16 +25,16 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    api 'com.android.support:appcompat-v7:28.0.0'
     //map 高德 3D地图so及jar
-    implementation('com.amap.api:3dmap:latest.integration') {
+    api('com.amap.api:3dmap:latest.integration') {
         exclude group: 'com.android.support'
     }
     //google地图
-    implementation('com.google.maps.android:android-maps-utils:0.4.4') {
+    api('com.google.maps.android:android-maps-utils:0.4.4') {
         exclude group: 'com.android.support'
     }
-    implementation('com.google.android.gms:play-services-maps:16.0.0') {
+    api('com.google.android.gms:play-services-maps:16.0.0') {
         exclude group: 'com.android.support'
     }
 }

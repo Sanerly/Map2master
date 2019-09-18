@@ -1,5 +1,6 @@
 package com.vsion.map2;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
@@ -241,6 +243,41 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(cameraPosition.target, cameraPosition.zoom, cameraPosition.tilt, orientation));
         gMap.moveCamera(mCameraUpdate);
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void uiSettings(MapUiSettings settings) {
+        if (gMap==null){
+            return;
+        }
+        UiSettings uiSettings = gMap.getUiSettings();
+        //设置地图是否可以倾斜
+        uiSettings.setTiltGesturesEnabled(settings.isTiltGesturesEnabled());
+        //设置地图是否可以旋转
+        uiSettings.setRotateGesturesEnabled(settings.isRotateGesturesEnabled());
+        //放大缩小按钮
+        uiSettings.setZoomControlsEnabled(settings.isZoomControlsEnabled());
+        //显示指南针
+        uiSettings.setCompassEnabled(settings.isCompassEnabled());
+        //移动到我的位置
+        uiSettings.setMyLocationButtonEnabled(settings.isMyLocationButtonEnabled());
+        if (settings.isMyLocationButtonEnabled()){
+            gMap.setLocationSource(new LocationSource() {
+                @Override
+                public void activate(OnLocationChangedListener onLocationChangedListener) {
+                    moveMyLocation();
+                }
+
+                @Override
+                public void deactivate() {
+
+                }
+            });
+            gMap.setMyLocationEnabled(settings.isMyLocationButtonEnabled());
+        }
+
+
     }
 
 

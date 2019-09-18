@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -125,7 +127,7 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public void setMyLocation(Location location) {
         mLocation = location;
-        if (mLocation==null){
+        if (mLocation == null) {
             return;
         }
         // 坐标转换
@@ -294,6 +296,37 @@ public class GaodeMapLayout extends BaseMap {
         //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(cameraPosition.target, cameraPosition.zoom, cameraPosition.tilt, orientation));
         aMap.moveCamera(mCameraUpdate);
+    }
+
+    @Override
+    protected void uiSettings(MapUiSettings settings) {
+        if (aMap == null) {
+            return;
+        }
+        UiSettings uiSettings = aMap.getUiSettings();
+        //设置地图是否可以倾斜
+        uiSettings.setTiltGesturesEnabled(settings.isTiltGesturesEnabled());
+        //设置地图是否可以旋转
+        uiSettings.setRotateGesturesEnabled(settings.isRotateGesturesEnabled());
+        //放大缩小按钮
+        uiSettings.setZoomControlsEnabled(settings.isZoomControlsEnabled());
+        //显示指南针
+        uiSettings.setCompassEnabled(settings.isCompassEnabled());
+        //移动到我的位置
+        uiSettings.setMyLocationButtonEnabled(settings.isMyLocationButtonEnabled());
+        if (settings.isMyLocationButtonEnabled()) {
+            aMap.setLocationSource(new LocationSource() {
+                @Override
+                public void activate(OnLocationChangedListener onLocationChangedListener) {
+                    moveMyLocation();
+                }
+
+                @Override
+                public void deactivate() {
+                }
+            });
+            aMap.setMyLocationEnabled(settings.isMyLocationButtonEnabled());
+        }
     }
 
 

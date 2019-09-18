@@ -14,6 +14,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vsion.map2.BaseMap;
 import com.vsion.map2.LngLat;
 import com.vsion.map2.LocationUtils;
+import com.vsion.map2.MapUiSettings;
 
 import io.reactivex.functions.Consumer;
 
@@ -32,9 +33,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
 
-        mapView.init(mLocationUtils.getLastKnownLocation(), false);
+        mapView.init(mLocationUtils.getLastKnownLocation(), true);
+        MapUiSettings uiSettings = new MapUiSettings();
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
+        uiSettings.setRotateGesturesEnabled(true);
+        uiSettings.setTiltGesturesEnabled(true);
+        uiSettings.setZoomControlsEnabled(true);
 
-        mapView.getBaseMap().setPlaneIcon(R.mipmap.ic_map_location_drone)
+        mapView.getBaseMap()
+                .setPlaneIcon(R.mipmap.ic_map_location_drone)
                 .setMyIcon(R.mipmap.ic_map_my_loaction)
                 .setPointRes(array, 7)
                 .setMaxPoint(5)
@@ -46,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         mapView.getBaseMap().deleteAllMarker();
                     }
                 })
+                .setUiSettings(uiSettings)
                 .build();
     }
 
