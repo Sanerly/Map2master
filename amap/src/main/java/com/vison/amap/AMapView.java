@@ -1,4 +1,4 @@
-package com.vsion.map2;
+package com.vison.amap;
 
 import android.content.Context;
 import android.location.Location;
@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.vison.amap.GaodeMapLayout;
 import com.vison.base_map.BaseMap;
-import com.vison.gmap.GoogleMapLayout;
 
 
 /**
@@ -17,28 +15,24 @@ import com.vison.gmap.GoogleMapLayout;
  * @CreateDate: 2019/8/12 16:08
  * @Description: 类描述
  */
-public class BaseMapView extends FrameLayout {
+public class AMapView extends FrameLayout {
     private BaseMap mBaseMap;
 
-    public BaseMapView(@NonNull Context context) {
+    public AMapView(@NonNull Context context) {
         this(context, null);
     }
 
-    public BaseMapView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public AMapView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BaseMapView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AMapView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
     }
 
-    public void init(Location location, boolean isChina) {
-        if (isChina) {
-            mBaseMap = new GaodeMapLayout(getContext(), location);
-        } else {
-            mBaseMap = new GoogleMapLayout(getContext(), location);
-        }
+    public void init(Location location) {
+        mBaseMap = new GaodeMapLayout(getContext(), location);
         mBaseMap.init(this);
     }
 

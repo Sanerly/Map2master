@@ -1,8 +1,7 @@
-package com.vsion.map2;
+package com.vison.base_map;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public abstract class BaseMap {
     protected boolean isMapReady;        //地图准备就绪
     protected boolean isOnlyLook = false;
     protected OnMapClickListener onMapClickListener;
-
+    private CompassUtils mCompassUtils;
 
     public BaseMap(Context context, Location location) {
         this.context = context;
@@ -46,6 +45,25 @@ public abstract class BaseMap {
     public List<LngLat> getLngLats() {
         return mLngLats;
     }
+
+
+    /**
+     * 设置地图是否旋转
+     */
+    public BaseMap setCompass(boolean isCompass) {
+        if (isCompass && mCompassUtils == null) {
+            mCompassUtils = new CompassUtils(context);
+            mCompassUtils.setCompassLister(mCompassLister);
+        }
+        return this;
+    }
+
+    private CompassUtils.CompassLister mCompassLister = new CompassUtils.CompassLister() {
+        @Override
+        public void onOrientationChange(float orientation) {
+            onRotate(orientation);
+        }
+    };
 
     /**
      * 设置航点图标的数组
@@ -207,7 +225,7 @@ public abstract class BaseMap {
     public abstract void onRotate(float orientation);
 
 
-    protected abstract void uiSettings(MapUiSettings settings);
+    public abstract void uiSettings(MapUiSettings settings);
 
 
     /**
@@ -223,7 +241,10 @@ public abstract class BaseMap {
     /**
      * 销毁地图
      */
-    public abstract void onDestroy();
-
+    public void onDestroy() {
+        if (mCompassUtils != null) {
+            mCompassUtils.unbind();
+        }
+    }
 
 }

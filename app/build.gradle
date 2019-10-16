@@ -24,5 +24,8 @@ dependencies {
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
-    implementation project(path: ':map2')
+//    implementation project(path: ':map2')
+    implementation project(path: ':base_map')
+    implementation project(path: ':gmap')
+//    implementation project(path: ':amap')
 }

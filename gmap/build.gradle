@@ -1,11 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion rootProject.ext.COMPILE_SDKVERSION
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.MIN_SDKVERSION
+        targetSdkVersion rootProject.ext.TARGET_SDKVERSION
         versionCode rootProject.ext.VERSION_CODE
         versionName rootProject.ext.VERSION_NAME
     }
@@ -24,9 +23,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':gmap')
-    implementation project(path: ':amap')
+    //google地图
+    implementation('com.google.android.gms:play-services-maps:16.0.0') {
+        exclude group: 'com.android.support'
+    }
     implementation project(path: ':base_map')
-
 }
-

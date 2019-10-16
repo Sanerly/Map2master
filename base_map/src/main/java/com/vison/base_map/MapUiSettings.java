@@ -1,4 +1,4 @@
-package com.vsion.map2;
+package com.vison.base_map;
 
 /**
  * @Author: Sanerly

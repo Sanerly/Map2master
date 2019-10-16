@@ -1,4 +1,4 @@
-package com.vsion.map2;
+package com.vison.gmap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,6 +24,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.vison.base_map.BaseMap;
+import com.vison.base_map.CoordinateTransformUtil;
+import com.vison.base_map.LngLat;
+import com.vison.base_map.MapUiSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,6 +243,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void onRotate(float orientation) {
+        if (gMap == null) {
+            return;
+        }
         CameraPosition cameraPosition = gMap.getCameraPosition();
         //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(cameraPosition.target, cameraPosition.zoom, cameraPosition.tilt, orientation));
@@ -247,8 +254,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     @Override
-    protected void uiSettings(MapUiSettings settings) {
-        if (gMap==null){
+    public void uiSettings(MapUiSettings settings) {
+        if (gMap == null) {
             return;
         }
         UiSettings uiSettings = gMap.getUiSettings();
@@ -262,7 +269,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         uiSettings.setCompassEnabled(settings.isCompassEnabled());
         //移动到我的位置
         uiSettings.setMyLocationButtonEnabled(settings.isMyLocationButtonEnabled());
-        if (settings.isMyLocationButtonEnabled()){
+        if (settings.isMyLocationButtonEnabled()) {
             gMap.setLocationSource(new LocationSource() {
                 @Override
                 public void activate(OnLocationChangedListener onLocationChangedListener) {
@@ -299,6 +306,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (gMapView == null) {
             return;
         }
@@ -310,7 +318,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         gMap = googleMap;
         UiSettings uiSettings = googleMap.getUiSettings();
         // 指南针
-        uiSettings.setCompassEnabled(true);
+        uiSettings.setCompassEnabled(false);
 
         uiSettings.setAllGesturesEnabled(true);
 

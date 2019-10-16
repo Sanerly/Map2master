@@ -1,4 +1,4 @@
-package com.vsion.map2;
+package com.vison.base_map;
 
 /**
  * Created by XiaoShu on 2017/11/10 0010.

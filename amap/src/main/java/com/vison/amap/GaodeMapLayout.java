@@ -1,10 +1,9 @@
-package com.vsion.map2;
+package com.vison.amap;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -22,8 +21,13 @@ import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.vison.base_map.BaseMap;
+import com.vison.base_map.CoordinateTransformUtil;
+import com.vison.base_map.LngLat;
+import com.vison.base_map.MapUiSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +77,7 @@ public class GaodeMapLayout extends BaseMap {
         // 设置最小缩放级别为2km
         aMap.setMinZoomLevel(12);
         // 设置缩放级别
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(19));
-
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(22));
 
         aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
@@ -107,7 +110,7 @@ public class GaodeMapLayout extends BaseMap {
             double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
             LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 19, cameraPosition.tilt, cameraPosition.bearing));
+            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 22, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
 //            setMyLocation(mLocation);
         }
@@ -299,7 +302,7 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
-    protected void uiSettings(MapUiSettings settings) {
+    public void uiSettings(MapUiSettings settings) {
         if (aMap == null) {
             return;
         }
@@ -348,10 +351,10 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (aMapView == null) {
             return;
         }
         aMapView.onDestroy();
     }
-
 }

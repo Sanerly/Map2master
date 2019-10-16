@@ -11,16 +11,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.vsion.map2.BaseMap;
-import com.vsion.map2.LngLat;
-import com.vsion.map2.LocationUtils;
-import com.vsion.map2.MapUiSettings;
+import com.vison.base_map.BaseMap;
+import com.vison.base_map.LngLat;
+import com.vison.base_map.LocationUtils;
+import com.vison.base_map.MapUiSettings;
 
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private CoustomMapView mapView;
+
+
     private LocationUtils mLocationUtils;
     private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
 
@@ -33,13 +35,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
 
-        mapView.init(mLocationUtils.getLastKnownLocation(), true);
+        mapView.init(mLocationUtils.getLastKnownLocation());
+
         MapUiSettings uiSettings = new MapUiSettings();
         uiSettings.setCompassEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setRotateGesturesEnabled(true);
         uiSettings.setTiltGesturesEnabled(true);
-        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setZoomControlsEnabled(false);
 
         mapView.getBaseMap()
                 .setPlaneIcon(R.mipmap.ic_map_location_drone)
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         mapView.getBaseMap().deleteAllMarker();
                     }
                 })
+                .setCompass(false)
                 .setUiSettings(uiSettings)
                 .build();
     }
