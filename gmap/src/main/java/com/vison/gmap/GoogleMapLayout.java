@@ -349,12 +349,6 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isMapReady = true;
-            }
-        }, 1500);
 
         if (mLocation != null) {
             CameraPosition cameraPosition = gMap.getCameraPosition();
@@ -364,7 +358,15 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 19, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
-//            setMyLocation(mLocation);
+
         }
+
+        gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                isMapReady = true;
+                setMyLocation(mLocation);
+            }
+        });
     }
 }

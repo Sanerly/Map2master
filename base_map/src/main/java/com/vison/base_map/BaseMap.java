@@ -24,7 +24,7 @@ public abstract class BaseMap {
     protected int mMaxPoint = 15;
     protected int mMaxDistance = 50;
     protected boolean isHasArea = true;
-    protected boolean isMapReady;        //地图准备就绪
+    protected boolean isMapReady=false;        //地图准备就绪
     protected boolean isOnlyLook = false;
     protected OnMapClickListener onMapClickListener;
     private CompassUtils mCompassUtils;
@@ -61,6 +61,8 @@ public abstract class BaseMap {
     private CompassUtils.CompassLister mCompassLister = new CompassUtils.CompassLister() {
         @Override
         public void onOrientationChange(float orientation) {
+            // 横屏数值
+            orientation = 360 - (orientation + 90);
             onRotate(orientation);
         }
     };
@@ -102,8 +104,15 @@ public abstract class BaseMap {
     /**
      * 是否显示区域
      */
-    public BaseMap setHasArea(boolean isHasArea, int res) {
+    public BaseMap setHasArea(boolean isHasArea) {
         this.isHasArea = isHasArea;
+        return this;
+    }
+
+    /**
+     * 点击区域外的文字提示
+     */
+    public BaseMap setOutAreaText(int res) {
         this.mInvalidPointRes = res;
         return this;
     }
@@ -157,6 +166,13 @@ public abstract class BaseMap {
         return this;
     }
 
+    /**
+     * 地图准备完成
+     */
+    public boolean getMapReady(){
+
+        return isMapReady;
+    }
 
     /**
      * 地图点击监听
@@ -165,13 +181,6 @@ public abstract class BaseMap {
         void onMapClick(LngLat lngLat);
     }
 
-
-    /**
-     * 开始构建
-     */
-    public void build() {
-        setMyLocation(mLocation);
-    }
 
     /**
      * 初始化

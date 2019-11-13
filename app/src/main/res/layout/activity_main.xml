@@ -8,7 +8,13 @@
 
     <com.sanerly.map2_master.CoustomMapView
         android:id="@+id/cous_tom_map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:round_as_circle="true"
+        app:round_corner="30dp" />
 
 </android.support.constraint.ConstraintLayout>

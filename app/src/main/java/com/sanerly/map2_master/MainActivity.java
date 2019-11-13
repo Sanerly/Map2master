@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
 
-        mapView.init(mLocationUtils.getLastKnownLocation());
+        mapView.init(mLocationUtils.getLastKnownLocation(),true);
 
         MapUiSettings uiSettings = new MapUiSettings();
         uiSettings.setCompassEnabled(true);
@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMyIcon(R.mipmap.ic_map_my_loaction)
                 .setPointRes(array, 7)
                 .setMaxPoint(5)
-                .setHasArea(true, R.string.invalid)
+                .setHasArea(true)
+                .setCompass(true)
+                .setOutAreaText(R.string.invalid)
                 .setMaxDistance(30)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
@@ -58,14 +60,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     }
                 })
                 .setCompass(false)
-                .setUiSettings(uiSettings)
-                .build();
+                .setUiSettings(uiSettings);
     }
 
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
+        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
+        Log.d("dddd", mapView.getBaseMap().getMapReady() + "");
         Log.d("dddd", location + "");
+
     }
 
     @Override

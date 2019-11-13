@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.vison.base_map.BaseMap;
+import com.vison.base_map.widget.RCRelativeLayout;
 
 
 /**
@@ -15,7 +16,7 @@ import com.vison.base_map.BaseMap;
  * @CreateDate: 2019/8/12 16:08
  * @Description: 类描述
  */
-public class AMapView extends FrameLayout {
+public class AMapView extends RCRelativeLayout {
     private BaseMap mBaseMap;
 
     public AMapView(@NonNull Context context) {

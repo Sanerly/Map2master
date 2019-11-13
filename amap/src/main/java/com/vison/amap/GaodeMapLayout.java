@@ -92,17 +92,6 @@ public class GaodeMapLayout extends BaseMap {
             }
         });
 
-        aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
-            @Override
-            public void onMapLoaded() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isMapReady = true;
-                    }
-                }, 1500);
-            }
-        });
 
         if (mLocation != null) {
             CameraPosition cameraPosition = aMap.getCameraPosition();
@@ -112,8 +101,16 @@ public class GaodeMapLayout extends BaseMap {
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 22, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
-//            setMyLocation(mLocation);
         }
+
+
+        aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
+            @Override
+            public void onMapLoaded() {
+                isMapReady = true;
+                setMyLocation(mLocation);
+            }
+        });
     }
 
     @Override
@@ -131,6 +128,9 @@ public class GaodeMapLayout extends BaseMap {
     public void setMyLocation(Location location) {
         mLocation = location;
         if (mLocation == null) {
+            return;
+        }
+        if (!isMapReady) {
             return;
         }
         // 坐标转换

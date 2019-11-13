@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.vison.amap.GaodeMapLayout;
 import com.vison.base_map.BaseMap;
+import com.vison.base_map.widget.RCRelativeLayout;
 import com.vison.gmap.GoogleMapLayout;
 
 
@@ -17,7 +18,7 @@ import com.vison.gmap.GoogleMapLayout;
  * @CreateDate: 2019/8/12 16:08
  * @Description: 类描述
  */
-public class BaseMapView extends FrameLayout {
+public class BaseMapView extends RCRelativeLayout {
     private BaseMap mBaseMap;
 
     public BaseMapView(@NonNull Context context) {
