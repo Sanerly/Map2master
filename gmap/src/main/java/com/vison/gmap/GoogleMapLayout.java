@@ -74,7 +74,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setMyLocation(Location location) {
-        if (!isMapReady) {
+        if (!isMapReady || location == null) {
             return;
         }
         mLocation = location;

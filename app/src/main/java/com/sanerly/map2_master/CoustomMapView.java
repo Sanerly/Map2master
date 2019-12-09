@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.vsion.map2.BaseMapView;
+import com.vison.gmap.GMapView;
 
 /**
  * @Author: Sanerly
  * @CreateDate: 2019/8/12 16:49
  * @Description: 类描述
  */
-public class CoustomMapView extends BaseMapView {
+public class CoustomMapView extends GMapView {
     public CoustomMapView(@NonNull Context context) {
         this(context, null);
     }
@@ -26,8 +26,5 @@ public class CoustomMapView extends BaseMapView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    public void init(Location location, boolean isChina) {
-        super.init(location, isChina);
-    }
+
 }

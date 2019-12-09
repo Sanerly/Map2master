@@ -126,13 +126,10 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setMyLocation(Location location) {
+        if (!isMapReady || mLocation == null) {
+            return;
+        }
         mLocation = location;
-        if (mLocation == null) {
-            return;
-        }
-        if (!isMapReady) {
-            return;
-        }
         // 坐标转换
         double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(location.getLongitude(), location.getLatitude());
         LatLng latLng = new LatLng(gcj02[1], gcj02[0]);

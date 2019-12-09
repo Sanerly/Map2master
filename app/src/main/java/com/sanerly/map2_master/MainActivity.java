@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
 
-        mapView.init(mLocationUtils.getLastKnownLocation(),true);
+        mapView.init(mLocationUtils.getLastKnownLocation());
 
         MapUiSettings uiSettings = new MapUiSettings();
         uiSettings.setCompassEnabled(true);
