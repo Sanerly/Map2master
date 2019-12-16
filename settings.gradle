@@ -1,1 +1,1 @@
-include ':app', ':map2', ':base_map', ':gmap', ':amap'
+include ':app', ':map2', ':base_map', ':gmap', ':amap', ':tmap'

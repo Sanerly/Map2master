@@ -3,8 +3,9 @@ package com.vison.base_map;
 /**
  * @Author: Sanerly
  * @CreateDate: 2019/9/18 10:25
- * @Description: 类描述
+ * @Description: 地图设置
  */
+@Deprecated
 public class MapUiSettings {
     //设置地图是否可以倾斜
     private boolean tiltGesturesEnabled;

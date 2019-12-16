@@ -184,7 +184,8 @@ public class GaodeMapLayout extends BaseMap {
         } else {
             aDroneMarker.setPosition(latLng);
         }
-        aDroneMarker.setRotateAngle(aMap.getCameraPosition().bearing + angle);
+        aDroneMarker.setAnchor(0.5f, 0.5f);
+        aDroneMarker.setRotateAngle(360-aMap.getCameraPosition().bearing - angle);
     }
 
     @Override

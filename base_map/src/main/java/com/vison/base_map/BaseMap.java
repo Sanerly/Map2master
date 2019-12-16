@@ -152,7 +152,9 @@ public abstract class BaseMap {
 
     /**
      * 设置地图的默认UI
+     * 腾讯地图不支持，不推荐使用
      */
+    @Deprecated
     public BaseMap setUiSettings(MapUiSettings uiSettings) {
         this.uiSettings(uiSettings);
         return this;
@@ -234,26 +236,55 @@ public abstract class BaseMap {
     public abstract void onRotate(float orientation);
 
 
+    /**
+     * 设置地图配置
+     */
     public abstract void uiSettings(MapUiSettings settings);
 
 
     /**
-     * 重新绘制加载地图
+     * 地图生命周期
+     */
+    public void onStart() {
+    }
+
+    /**
+     * 地图生命周期
      */
     public abstract void onResume();
 
     /**
-     * 暂停地图的绘制
+     * 地图生命周期
      */
     public abstract void onPause();
 
+
     /**
-     * 销毁地图
+     * 地图生命周期
+     */
+    public void onStop() {
+
+    }
+
+    /**
+     * 地图生命周期
+     */
+    public void onRestart() {
+
+    }
+
+    /**
+     * 地图生命周期
      */
     public void onDestroy() {
         if (mCompassUtils != null) {
             mCompassUtils.unbind();
         }
     }
+
+
+
+
+
 
 }

@@ -6,14 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.vison.gmap.GMapView;
+import com.vison.tmap.TMapView;
+
 
 /**
  * @Author: Sanerly
  * @CreateDate: 2019/8/12 16:49
  * @Description: 类描述
  */
-public class CoustomMapView extends GMapView {
+public class CoustomMapView extends TMapView {
     public CoustomMapView(@NonNull Context context) {
         this(context, null);
     }
@@ -26,5 +27,9 @@ public class CoustomMapView extends GMapView {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override
+    public void init(Location location) {
+        super.init(location);
 
+    }
 }

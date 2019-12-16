@@ -1,0 +1,67 @@
+package com.vison.tmap;
+
+import android.content.Context;
+import android.location.Location;
+import android.util.AttributeSet;
+
+import com.vison.base_map.BaseMap;
+import com.vison.base_map.widget.RCRelativeLayout;
+
+/**
+ * @Author: Sanerly
+ * @CreateDate: 2019/12/10 16:49
+ * @Description: 类描述
+ */
+public class TMapView extends RCRelativeLayout {
+
+    private BaseMap mBaseMap;
+
+    public TMapView(Context context) {
+        this(context, null);
+    }
+
+    public TMapView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public TMapView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public void init(Location location) {
+        mBaseMap = new TencentMapLayout(getContext(), location);
+        mBaseMap.init(this);
+    }
+
+    public BaseMap getBaseMap() {
+        return mBaseMap;
+    }
+
+
+    /**
+     * 重新绘制加载地图
+     */
+    public void onResume() {
+        if (null != mBaseMap) {
+            mBaseMap.onResume();
+        }
+    }
+
+    /**
+     * 暂停地图的绘制
+     */
+    public void onPause() {
+        if (null != mBaseMap) {
+            mBaseMap.onPause();
+        }
+    }
+
+    /**
+     * 销毁地图
+     */
+    public void onDestroy() {
+        if (null != mBaseMap) {
+            mBaseMap.onDestroy();
+        }
+    }
+}

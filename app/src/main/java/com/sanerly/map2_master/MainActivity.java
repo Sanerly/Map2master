@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
     private LocationUtils mLocationUtils;
-    private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
+    private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
+            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setHasArea(true)
                 .setCompass(true)
                 .setOutAreaText(R.string.invalid)
-                .setMaxDistance(30)
+                .setMaxDistance(50)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 })
                 .setCompass(false)
                 .setUiSettings(uiSettings);
+        mapView.getBaseMap().setMapType(0);
     }
 
     @Override
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
 
     }
+
+
 
     @Override
     protected void onResume() {
@@ -114,7 +118,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @SuppressLint("CheckResult")
     private void setPermissions() {
         RxPermissions permissions = new RxPermissions(this);
-        permissions.request(Manifest.permission.ACCESS_FINE_LOCATION).subscribe(new Consumer<Boolean>() {
+        permissions.request(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE
+
+        ).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (!aBoolean) {
