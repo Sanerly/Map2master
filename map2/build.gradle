@@ -25,7 +25,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':gmap')
-    implementation project(path: ':amap')
+    implementation project(path: ':tmap')
     implementation project(path: ':base_map')
 
 }

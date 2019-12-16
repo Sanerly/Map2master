@@ -5,12 +5,11 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
-import com.vison.amap.GaodeMapLayout;
 import com.vison.base_map.BaseMap;
 import com.vison.base_map.widget.RCRelativeLayout;
 import com.vison.gmap.GoogleMapLayout;
+import com.vison.tmap.TencentMapLayout;
 
 
 /**
@@ -36,7 +35,7 @@ public class BaseMapView extends RCRelativeLayout {
 
     public void init(Location location, boolean isChina) {
         if (isChina) {
-            mBaseMap = new GaodeMapLayout(getContext(), location);
+            mBaseMap = new TencentMapLayout(getContext(), location);
         } else {
             mBaseMap = new GoogleMapLayout(getContext(), location);
         }
