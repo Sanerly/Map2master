@@ -49,7 +49,9 @@ public abstract class BaseMap {
 
     /**
      * 设置地图是否旋转
+     * 腾讯地图不支持，不推荐使用
      */
+    @Deprecated
     public BaseMap setCompass(boolean isCompass) {
         if (isCompass && mCompassUtils == null) {
             mCompassUtils = new CompassUtils(context);

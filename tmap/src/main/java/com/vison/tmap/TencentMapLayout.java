@@ -266,13 +266,6 @@ public class TencentMapLayout extends BaseMap {
 
     @Override
     public void onRotate(float orientation) {
-        LatLng latLng = getLatLng(mLocation);
-
-        CameraPosition cameraPosition = CameraPosition.fromLatLngZoom(latLng, 22);
-        //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-        //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-        CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        tMap.moveCamera(mCameraUpdate);
 
     }
 
