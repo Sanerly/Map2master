@@ -45,6 +45,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     private Marker aMyMarker;      // 手机定位点
     private Marker aDroneMarker;      // 飞机
     private Polyline aPolyline;             // 指点飞行路径
+    private Polyline aFlyPolyline;             // 起飞点到当前位置连线
     private List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     private Circle mCircle;
 
@@ -140,10 +141,10 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
             options.add(aDroneMarker.getPosition());
-            if (aPolyline == null) {
-                aPolyline = gMap.addPolyline(options);
+            if (aFlyPolyline == null) {
+                aFlyPolyline = gMap.addPolyline(options);
             } else {
-                aPolyline.setPoints(options.getPoints());
+                aFlyPolyline.setPoints(options.getPoints());
             }
         }
     }
@@ -250,6 +251,14 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             aPolyline = null;
         }
         aPolyline = gMap.addPolyline(options);
+    }
+
+    @Override
+    public void deleteFlyPolyline() {
+        if (aFlyPolyline != null) {
+            aFlyPolyline.remove();
+            aFlyPolyline = null;
+        }
     }
 
 

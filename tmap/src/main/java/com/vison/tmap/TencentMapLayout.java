@@ -265,6 +265,11 @@ public class TencentMapLayout extends BaseMap {
     }
 
     @Override
+    public void deleteFlyPolyline() {
+
+    }
+
+    @Override
     public void onRotate(float orientation) {
 
     }

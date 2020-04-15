@@ -44,6 +44,7 @@ public class GaodeMapLayout extends BaseMap {
     private Marker aMyMarker;      // 手机定位点
     private Marker aDroneMarker;      // 飞机
     private Polyline aPolyline;             // 指点飞行路径
+    private Polyline aFlyPolyline;             // 起飞点到当前位置连线
     private List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     private Circle mCircle;
 
@@ -194,10 +195,10 @@ public class GaodeMapLayout extends BaseMap {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
             options.add(aDroneMarker.getPosition());
-            if (aPolyline == null) {
-                aPolyline = aMap.addPolyline(options);
+            if (aFlyPolyline == null) {
+                aFlyPolyline = aMap.addPolyline(options);
             } else {
-                aPolyline.setOptions(options);
+                aFlyPolyline.setOptions(options);
             }
         }
 
@@ -304,6 +305,14 @@ public class GaodeMapLayout extends BaseMap {
             aPolyline = null;
         }
         aPolyline = aMap.addPolyline(options);
+    }
+
+    @Override
+    public void deleteFlyPolyline() {
+        if (aFlyPolyline != null) {
+            aFlyPolyline.remove();
+            aFlyPolyline = null;
+        }
     }
 
     @Override

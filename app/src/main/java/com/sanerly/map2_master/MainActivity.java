@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private CoustomMapView mapView;
     private Button btnPoint;
+    private Button btnDelete;
 
 
     private LocationUtils mLocationUtils;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.cous_tom_map_view);
         btnPoint = findViewById(R.id.btn_point);
+        btnDelete = findViewById(R.id.btn_delete);
         setPermissions();
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
-                        mapView.getBaseMap().deleteAllMarker();
+//                        mapView.getBaseMap().deleteAllMarker();
                     }
                 })
                 .setCompass(false)
                 .setUiSettings(uiSettings);
-//        mapView.getBaseMap().setMapType(0);
+        mapView.getBaseMap().setMapType(0);
 
         mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
         mapView.postDelayed(new Runnable() {
@@ -83,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
                 mapView.getBaseMap().setDroneLocation(116.75054182128906, 23.494296583496094, 170);
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.getBaseMap().deleteFlyPolyline();
             }
         });
     }

@@ -252,6 +252,12 @@ public abstract class BaseMap {
      */
     public abstract void deleteSingleMarker();
 
+
+    /**
+     * 删除起点到当前飞机点的连线
+     */
+    public abstract void deleteFlyPolyline();
+
     /**
      * 旋转
      */
