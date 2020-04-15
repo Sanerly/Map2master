@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.vison.tmap.TMapView;
+import com.vison.gmap.GMapView;
 
 
 /**
@@ -14,7 +14,7 @@ import com.vison.tmap.TMapView;
  * @CreateDate: 2019/8/12 16:49
  * @Description: 类描述
  */
-public class CoustomMapView extends TMapView {
+public class CoustomMapView extends GMapView {
     public CoustomMapView(@NonNull Context context) {
         this(context, null);
     }

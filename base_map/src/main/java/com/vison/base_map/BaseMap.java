@@ -26,6 +26,9 @@ public abstract class BaseMap {
     protected boolean isHasArea = true;
     protected boolean isMapReady=false;        //地图准备就绪
     protected boolean isOnlyLook = false;
+    protected boolean isShowLine = false;
+    protected double mStartLongitude = 0;
+    protected double mStartLatitude = 0;
     protected OnMapClickListener onMapClickListener;
     private CompassUtils mCompassUtils;
 
@@ -142,6 +145,23 @@ public abstract class BaseMap {
         this.mPlaneIcon = icon;
         return this;
     }
+
+    /**
+     * 是否显示飞机起飞点到当前飞机位置的连线
+     */
+    public BaseMap setShowLine(boolean showLine) {
+        isShowLine = showLine;
+        return this;
+    }
+
+    /**
+     * 设置飞机起点坐标
+     */
+    public  void setDroneStartPoint(double longitude, double latitude){
+        this.mStartLongitude=longitude;
+        this.mStartLatitude=latitude;
+    }
+
 
     /**
      * 设置点击范围无效点的提示

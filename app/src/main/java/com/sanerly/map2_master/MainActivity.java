@@ -6,8 +6,12 @@ import android.annotation.SuppressLint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -21,6 +25,7 @@ import io.reactivex.functions.Consumer;
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private CoustomMapView mapView;
+    private Button btnPoint;
 
 
     private LocationUtils mLocationUtils;
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.cous_tom_map_view);
+        btnPoint = findViewById(R.id.btn_point);
         setPermissions();
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setCompass(true)
                 .setOutAreaText(R.string.invalid)
                 .setMaxDistance(50)
+                .setShowLine(true)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
@@ -62,13 +69,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 })
                 .setCompass(false)
                 .setUiSettings(uiSettings);
-        mapView.getBaseMap().setMapType(0);
+//        mapView.getBaseMap().setMapType(0);
+
+        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
+        mapView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mapView.getBaseMap().setDroneLocation(116.75099182128906, 23.494286583496094, 270);
+            }
+        },2000);
+
+        btnPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.getBaseMap().setDroneLocation(116.75054182128906, 23.494296583496094, 170);
+            }
+        });
     }
 
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
-        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
+//        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
         Log.d("dddd", mapView.getBaseMap().getMapReady() + "");
         Log.d("dddd", location + "");
 

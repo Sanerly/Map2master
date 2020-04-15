@@ -134,13 +134,25 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         //设置旋转角度
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(gMap.getCameraPosition().bearing + angle);
+
+        if (isShowLine) {
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
+            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
+            options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
+            options.add(aDroneMarker.getPosition());
+            if (aPolyline == null) {
+                aPolyline = gMap.addPolyline(options);
+            } else {
+                aPolyline.setPoints(options.getPoints());
+            }
+        }
     }
 
     @Override
     public void setMapType(int type) {
         switch (type) {
             case 0:
-                if (gMapView != null) {
+                if (gMap != null) {
                     gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 }
                 break;

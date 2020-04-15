@@ -167,6 +167,7 @@ public class GaodeMapLayout extends BaseMap {
         }
     }
 
+
     @Override
     public void setDroneLocation(double longitude, double latitude, float angle) {
         if (!isMapReady) {
@@ -185,7 +186,21 @@ public class GaodeMapLayout extends BaseMap {
             aDroneMarker.setPosition(latLng);
         }
         aDroneMarker.setAnchor(0.5f, 0.5f);
-        aDroneMarker.setRotateAngle(360-aMap.getCameraPosition().bearing - angle);
+        aDroneMarker.setRotateAngle(360 - aMap.getCameraPosition().bearing - angle);
+
+
+        if (isShowLine) {
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
+            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
+            options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
+            options.add(aDroneMarker.getPosition());
+            if (aPolyline == null) {
+                aPolyline = aMap.addPolyline(options);
+            } else {
+                aPolyline.setOptions(options);
+            }
+        }
+
     }
 
     @Override
