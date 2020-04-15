@@ -136,7 +136,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(gMap.getCameraPosition().bearing + angle);
 
-        if (isShowLine) {
+        if (isShowLine && mStartLongitude!=0 && mStartLongitude!=0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));

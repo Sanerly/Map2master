@@ -79,12 +79,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             public void run() {
                 mapView.getBaseMap().setDroneLocation(116.75099182128906, 23.494286583496094, 270);
             }
-        },2000);
+        }, 2000);
 
         btnPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapView.getBaseMap().setDroneLocation(116.75054182128906, 23.494296583496094, 170);
+                mHandler.sendEmptyMessageDelayed(2,200);
+
             }
         });
 
@@ -95,7 +96,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
     }
-
+    int count = 0;
+    Handler mHandler=new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what==2){
+                count+=10;
+                if (count >= 360) {
+                    count = 0;
+                }
+                mapView.getBaseMap().setDroneLocation(116.75099182128906, 23.494286583496094, count);
+                mHandler.sendEmptyMessageDelayed(2,200);
+            }
+            return false;
+        }
+    });
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
@@ -119,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
 
     }
-
 
 
     @Override
