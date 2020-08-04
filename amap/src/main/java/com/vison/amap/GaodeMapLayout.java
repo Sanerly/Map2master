@@ -3,12 +3,12 @@ package com.vison.amap;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.Handler;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
@@ -21,7 +21,6 @@ import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 import com.vison.base_map.BaseMap;
@@ -110,6 +109,7 @@ public class GaodeMapLayout extends BaseMap {
             public void onMapLoaded() {
                 isMapReady = true;
                 setMyLocation(mLocation);
+                moveMyLocation();
             }
         });
     }
@@ -190,7 +190,7 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(360 - aMap.getCameraPosition().bearing - angle);
 
 
-        if (isShowLine && mStartLongitude!=0 && mStartLongitude!=0) {
+        if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -201,6 +201,30 @@ public class GaodeMapLayout extends BaseMap {
                 aFlyPolyline.setOptions(options);
             }
         }
+        if (isShowInfoWindow){
+            AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
+                // marker 对象被点击时回调的接口
+                // 返回 true 则表示接口已响应事件，否则返回false
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if (marker.getId().equals(aDroneMarker.getId())) {
+                        float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(),aDroneMarker.getPosition());
+                        aDroneMarker.setTitle("Last flight position of uav");
+                        String snippet="longitude:"+aDroneMarker.getPosition().longitude+"\nlatitude:"+aDroneMarker.getPosition().latitude+"\nfrom your current position "+distance+"m";
+                        aDroneMarker.setSnippet(snippet);
+                        if (aDroneMarker.isInfoWindowShown()) {
+                            aDroneMarker.hideInfoWindow();
+                        } else {
+                            aDroneMarker.showInfoWindow();
+                        }
+                    }
+                    return true;
+                }
+            };
+            aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
+            aMap.setOnMarkerClickListener(onMarkerClickListener);
+        }
+
 
     }
 

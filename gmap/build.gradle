@@ -27,5 +27,6 @@ dependencies {
     implementation('com.google.android.gms:play-services-maps:16.0.0') {
         exclude group: 'com.android.support'
     }
+    implementation 'com.google.maps.android:android-maps-utils:0.4.4'
     implementation project(path: ':base_map')
 }

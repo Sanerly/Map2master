@@ -24,9 +24,10 @@ public abstract class BaseMap {
     protected int mMaxPoint = 15;
     protected int mMaxDistance = 50;
     protected boolean isHasArea = true;
-    protected boolean isMapReady=false;        //地图准备就绪
+    protected boolean isMapReady = false;        //地图准备就绪
     protected boolean isOnlyLook = false;
     protected boolean isShowLine = false;
+    protected boolean isShowInfoWindow = false;
     protected double mStartLongitude = 0;
     protected double mStartLatitude = 0;
     protected OnMapClickListener onMapClickListener;
@@ -157,9 +158,9 @@ public abstract class BaseMap {
     /**
      * 设置飞机起点坐标
      */
-    public  void setDroneStartPoint(double longitude, double latitude){
-        this.mStartLongitude=longitude;
-        this.mStartLatitude=latitude;
+    public void setDroneStartPoint(double longitude, double latitude) {
+        this.mStartLongitude = longitude;
+        this.mStartLatitude = latitude;
     }
 
 
@@ -171,6 +172,10 @@ public abstract class BaseMap {
         return this;
     }
 
+    public BaseMap setShowInfoWindow(boolean show) {
+        this.isShowInfoWindow = show;
+        return this;
+    }
 
     /**
      * 设置地图的默认UI
@@ -193,7 +198,7 @@ public abstract class BaseMap {
     /**
      * 地图准备完成
      */
-    public boolean getMapReady(){
+    public boolean getMapReady() {
 
         return isMapReady;
     }
@@ -309,10 +314,6 @@ public abstract class BaseMap {
             mCompassUtils.unbind();
         }
     }
-
-
-
-
 
 
 }

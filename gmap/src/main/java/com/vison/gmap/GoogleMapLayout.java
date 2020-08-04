@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.Handler;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -136,7 +136,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(gMap.getCameraPosition().bearing + angle);
 
-        if (isShowLine && mStartLongitude!=0 && mStartLongitude!=0) {
+        if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -147,6 +147,32 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 aFlyPolyline.setPoints(options.getPoints());
             }
         }
+        if (isShowInfoWindow) {
+            GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
+                // marker 对象被点击时回调的接口
+                // 返回 true 则表示接口已响应事件，否则返回false
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if (marker.getId().equals(aDroneMarker.getId())) {
+
+                        double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude,
+                                aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
+                        aDroneMarker.setTitle("Last flight position of uav");
+                        String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+                        aDroneMarker.setSnippet(snippet);
+                        if (aDroneMarker.isInfoWindowShown()) {
+                            aDroneMarker.hideInfoWindow();
+                        } else {
+                            aDroneMarker.showInfoWindow();
+                        }
+                    }
+                    return true;
+                }
+            };
+            gMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
+            gMap.setOnMarkerClickListener(onMarkerClickListener);
+        }
+
     }
 
     @Override
@@ -387,6 +413,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             public void onMapLoaded() {
                 isMapReady = true;
                 setMyLocation(mLocation);
+                moveDroneLocation();
             }
         });
     }

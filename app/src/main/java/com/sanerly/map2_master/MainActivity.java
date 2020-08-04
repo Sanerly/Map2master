@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setOutAreaText(R.string.invalid)
                 .setMaxDistance(50)
                 .setShowLine(true)
+                .setOnlyLook(true)
+                .setShowInfoWindow(true)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
@@ -73,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setUiSettings(uiSettings);
         mapView.getBaseMap().setMapType(0);
 
-        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
+//        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
         mapView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mapView.getBaseMap().setDroneLocation(116.75099182128906, 23.494286583496094, 270);
+                mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, 270);
             }
         }, 2000);
 
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 if (count >= 360) {
                     count = 0;
                 }
-                mapView.getBaseMap().setDroneLocation(116.75099182128906, 23.494286583496094, count);
+                mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, count);
                 mHandler.sendEmptyMessageDelayed(2,200);
             }
             return false;
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
+
 //        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
         Log.d("dddd", mapView.getBaseMap().getMapReady() + "");
         Log.d("dddd", location + "");
