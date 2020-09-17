@@ -28,6 +28,7 @@ public abstract class BaseMap {
     protected boolean isOnlyLook = false;
     protected boolean isShowLine = false;
     protected boolean isShowInfoWindow = false;
+    protected boolean isLocationConvert = false;
     protected double mStartLongitude = 0;
     protected double mStartLatitude = 0;
     protected OnMapClickListener onMapClickListener;
@@ -178,6 +179,15 @@ public abstract class BaseMap {
     }
 
     /**
+     * Google地图是否 GCJ02(火星坐标系)转GPS84
+     * @param convert
+     */
+    public BaseMap setGoogleLocationConvert(boolean convert) {
+        this.isLocationConvert = convert;
+        return this;
+    }
+
+    /**
      * 设置地图的默认UI
      * 腾讯地图不支持，不推荐使用
      */
@@ -219,7 +229,7 @@ public abstract class BaseMap {
     /**
      * 移动到手机为中心位置
      */
-    public abstract void moveMyLocation();
+    public abstract boolean moveMyLocation();
 
     /**
      * 设置手机的位置
@@ -230,7 +240,7 @@ public abstract class BaseMap {
     /**
      * 移动到飞机为中心位置
      */
-    public abstract void moveDroneLocation();
+    public abstract boolean moveDroneLocation();
 
     /**
      * 设置飞机位置

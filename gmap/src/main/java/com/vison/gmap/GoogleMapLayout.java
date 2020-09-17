@@ -63,13 +63,16 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
-    public void moveMyLocation() {
+    public boolean moveMyLocation() {
         if (aMyMarker != null) {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aMyMarker.getPosition(),
                     cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -80,8 +83,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         }
         mLocation = location;
         // 坐标转换
-        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(location.getLongitude(), location.getLatitude());
-        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(location.getLongitude(), location.getLatitude());
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        }
         if (aMyMarker == null && mMyIcon > 0) {
             aMyMarker = gMap.addMarker(new MarkerOptions()
                     .position(latLng)
@@ -105,13 +113,16 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
-    public void moveDroneLocation() {
+    public boolean moveDroneLocation() {
         if (aDroneMarker != null) {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aDroneMarker.getPosition(),
                     cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -121,8 +132,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             return;
         }
         // 坐标转换
-        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
-        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(latitude, longitude);
+        }
 
         if (null == aDroneMarker) {
             // 设置 飞机 图标
@@ -138,8 +154,14 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
         if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
-            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
-            options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
+            LatLng latLngLine;
+            if (isLocationConvert) {
+                double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
+                latLngLine = new LatLng(gcj02Line[1], gcj02Line[0]);
+            } else {
+                latLngLine = new LatLng(mStartLatitude, mStartLongitude);
+            }
+            options.add(latLngLine);
             options.add(aDroneMarker.getPosition());
             if (aFlyPolyline == null) {
                 aFlyPolyline = gMap.addPolyline(options);
@@ -211,9 +233,14 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         }
 
         if (mLngLats.size() < mMaxPoint) {
-            // 转为gcj02
-            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
-            LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+            // 坐标转换
+            LatLng latLng;
+            if (isLocationConvert) {
+                double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
+                latLng = new LatLng(gcj02[1], gcj02[0]);
+            } else {
+                latLng = new LatLng(lngLat.getLatitude(), lngLat.getLongitude());
+            }
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             if (mPointRes == 0) {
@@ -388,11 +415,18 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             @Override
             public void onMapClick(LatLng latLng) {
                 // 转为wgs84
-                double[] wgs84 = CoordinateTransformUtil.gcj02towgs84(latLng.longitude, latLng.latitude);
-                if (onMapClickListener != null) {
-                    onMapClickListener.onMapClick(new LngLat(wgs84[0], wgs84[1]));
+                // 坐标转换
+                LatLng latLngConvert;
+                if (isLocationConvert) {
+                    double[] wgs84 = CoordinateTransformUtil.gcj02towgs84(latLng.longitude, latLng.latitude);
+                    latLngConvert = new LatLng(wgs84[1], wgs84[0]);
+                } else {
+                    latLngConvert = new LatLng(latLng.latitude, latLng.longitude);
                 }
-                addPointMarker(new LngLat(wgs84[0], wgs84[1]));
+                if (onMapClickListener != null) {
+                    onMapClickListener.onMapClick(new LngLat(latLngConvert.longitude, latLngConvert.latitude));
+                }
+                addPointMarker(new LngLat(latLngConvert.longitude, latLngConvert.latitude));
             }
         });
 
@@ -400,8 +434,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         if (mLocation != null) {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             // 坐标转换
-            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
-            LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+            LatLng latLng;
+            if (isLocationConvert) {
+                double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
+                latLng = new LatLng(gcj02[1], gcj02[0]);
+            } else {
+                latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+            }
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 19, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);

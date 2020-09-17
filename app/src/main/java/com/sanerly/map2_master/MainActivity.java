@@ -63,8 +63,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setOutAreaText(R.string.invalid)
                 .setMaxDistance(50)
                 .setShowLine(true)
-                .setOnlyLook(true)
+                .setOnlyLook(false)
                 .setShowInfoWindow(true)
+                .setGoogleLocationConvert(true)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
@@ -76,50 +77,58 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView.getBaseMap().setMapType(0);
 
 //        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
-        mapView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, 270);
-            }
-        }, 2000);
+//        mapView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, 270);
+//            }
+//        }, 2000);
 
-        btnPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHandler.sendEmptyMessageDelayed(2,200);
-
-            }
-        });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapView.getBaseMap().deleteFlyPolyline();
-            }
-        });
+//        btnPoint.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mHandler.sendEmptyMessageDelayed(2,200);
+//
+//            }
+//        });
+//
+//        btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mapView.getBaseMap().deleteFlyPolyline();
+//            }
+//        });
+        mHandler.sendEmptyMessageDelayed(3, 2000);
     }
+
     int count = 0;
-    Handler mHandler=new Handler(new Handler.Callback() {
+    Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            if (msg.what==2){
-                count+=10;
+            if (msg.what == 2) {
+                count += 10;
                 if (count >= 360) {
                     count = 0;
                 }
                 mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, count);
-                mHandler.sendEmptyMessageDelayed(2,200);
+                mHandler.sendEmptyMessageDelayed(2, 200);
+            } else if (msg.what == 3) {
+                Log.d("MainActivity",  "定位: "+mapView.getBaseMap().moveMyLocation());
+                if (!mapView.getBaseMap().moveMyLocation()) {
+
+                    mHandler.sendEmptyMessageDelayed(3, 500);
+                }
             }
             return false;
         }
     });
+
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
-
+        Log.d("MainActivity",  "定位: "+location);
 //        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
-        Log.d("dddd", mapView.getBaseMap().getMapReady() + "");
-        Log.d("dddd", location + "");
+        Log.d("MainActivity", "定位: "+mapView.getBaseMap().getMapReady() + "");
 
     }
 
