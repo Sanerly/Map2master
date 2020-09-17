@@ -452,8 +452,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             public void onMapLoaded() {
                 isMapReady = true;
                 setMyLocation(mLocation);
-                moveDroneLocation();
+                moveMyLocation();
             }
         });
+        isMapReady = true;
     }
 }
