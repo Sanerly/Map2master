@@ -14,6 +14,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Circle;
@@ -38,14 +39,15 @@ import java.util.List;
  */
 public class GaodeMapLayout extends BaseMap {
 
-    private TextureMapView aMapView;
-    private AMap aMap;
-    private Marker aMyMarker;      // 手机定位点
-    private Marker aDroneMarker;      // 飞机
-    private Polyline aPolyline;             // 指点飞行路径
-    private Polyline aFlyPolyline;             // 起飞点到当前位置连线
-    private List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
-    private Circle mCircle;
+    protected TextureMapView aMapView;
+    protected AMap aMap;
+    protected Marker aMyMarker;          // 手机定位点
+    protected Marker aDroneMarker;      // 飞机
+    protected Polyline aPolyline;       // 指点飞行路径
+    protected Polyline aFlyPolyline;    // 起飞点到当前位置连线
+    protected Polyline aDroneTrackline;  //飞机轨迹路径
+    protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
+    protected Circle mCircle;
 
     public GaodeMapLayout(Context context, Location location) {
         super(context, location);
@@ -123,7 +125,7 @@ public class GaodeMapLayout extends BaseMap {
                     cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -169,7 +171,7 @@ public class GaodeMapLayout extends BaseMap {
                     cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -207,16 +209,16 @@ public class GaodeMapLayout extends BaseMap {
                 aFlyPolyline.setOptions(options);
             }
         }
-        if (isShowInfoWindow){
+        if (isShowInfoWindow) {
             AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
                 // marker 对象被点击时回调的接口
                 // 返回 true 则表示接口已响应事件，否则返回false
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     if (marker.getId().equals(aDroneMarker.getId())) {
-                        float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(),aDroneMarker.getPosition());
+                        float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
                         aDroneMarker.setTitle("Last flight position of uav");
-                        String snippet="longitude:"+aDroneMarker.getPosition().longitude+"\nlatitude:"+aDroneMarker.getPosition().latitude+"\nfrom your current position "+distance+"m";
+                        String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
                         aDroneMarker.setSnippet(snippet);
                         if (aDroneMarker.isInfoWindowShown()) {
                             aDroneMarker.hideInfoWindow();
@@ -344,6 +346,30 @@ public class GaodeMapLayout extends BaseMap {
             aFlyPolyline = null;
         }
     }
+
+    @Override
+    public void drawMoveTrack(List<LngLat> lngLats, int color) {
+        PolylineOptions options = new PolylineOptions().color(color).width(8);
+        for (int i = 0; i < lngLats.size(); i++) {
+            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
+            options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
+        }
+
+        if (aDroneTrackline == null) {
+            aDroneTrackline = aMap.addPolyline(options);
+        } else {
+            aDroneTrackline.setOptions(options);
+        }
+    }
+
+    @Override
+    public void deleteMoveTrack() {
+        if (aDroneTrackline != null) {
+            aDroneTrackline.remove();
+            aDroneTrackline = null;
+        }
+    }
+
 
     @Override
     public void onRotate(float orientation) {

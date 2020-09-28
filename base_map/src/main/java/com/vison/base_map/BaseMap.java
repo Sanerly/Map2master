@@ -180,6 +180,7 @@ public abstract class BaseMap {
 
     /**
      * Google地图是否 GCJ02(火星坐标系)转GPS84
+     *
      * @param convert
      */
     public BaseMap setGoogleLocationConvert(boolean convert) {
@@ -272,6 +273,16 @@ public abstract class BaseMap {
      * 删除起点到当前飞机点的连线
      */
     public abstract void deleteFlyPolyline();
+
+    /**
+     * 画飞机的移动轨迹
+     */
+    public abstract void drawMoveTrack(List<LngLat> lngLats, int color);
+
+    /**
+     * 删除飞机的移动轨迹
+     */
+    public abstract void deleteMoveTrack();
 
     /**
      * 旋转

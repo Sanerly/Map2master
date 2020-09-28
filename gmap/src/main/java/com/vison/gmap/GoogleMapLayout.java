@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -39,15 +38,15 @@ import java.util.List;
  */
 public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
-    private MapView gMapView;
-    private GoogleMap gMap;
-
-    private Marker aMyMarker;      // 手机定位点
-    private Marker aDroneMarker;      // 飞机
-    private Polyline aPolyline;             // 指点飞行路径
-    private Polyline aFlyPolyline;             // 起飞点到当前位置连线
-    private List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
-    private Circle mCircle;
+    protected MapView gMapView;
+    protected GoogleMap gMap;
+    protected Marker aMyMarker;      // 手机定位点
+    protected Marker aDroneMarker;      // 飞机
+    protected Polyline aPolyline;             // 指点飞行路径
+    protected Polyline aFlyPolyline;             // 起飞点到当前位置连线
+    protected Polyline aDroneTrackline;  //飞机轨迹路径
+    protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
+    protected Circle mCircle;
 
     public GoogleMapLayout(Context context, Location location) {
         super(context, location);
@@ -311,6 +310,31 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         if (aFlyPolyline != null) {
             aFlyPolyline.remove();
             aFlyPolyline = null;
+        }
+    }
+
+    @Override
+    public void drawMoveTrack(List<LngLat> lngLats, int color) {
+        PolylineOptions options = new PolylineOptions().color(color).width(8);
+        for (int i = 0; i < lngLats.size(); i++) {
+            LatLng latLng;
+            if (isLocationConvert) {
+                double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
+                latLng = new LatLng(gcj02[1], gcj02[0]);
+            } else {
+                latLng = new LatLng(lngLats.get(i).getLatitude(), lngLats.get(i).getLongitude());
+            }
+
+            options.add(latLng);
+        }
+        aDroneTrackline = gMap.addPolyline(options);
+    }
+
+    @Override
+    public void deleteMoveTrack() {
+        if (aDroneTrackline != null) {
+            aDroneTrackline.remove();
+            aDroneTrackline = null;
         }
     }
 

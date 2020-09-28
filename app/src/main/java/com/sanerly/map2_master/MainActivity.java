@@ -3,6 +3,7 @@ package com.sanerly.map2_master;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import com.vison.base_map.LngLat;
 import com.vison.base_map.LocationUtils;
 import com.vison.base_map.MapUiSettings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private LocationUtils mLocationUtils;
     private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
             R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
+    private List<LngLat> mLngLats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView.getBaseMap()
                 .setPlaneIcon(R.mipmap.ic_map_location_drone)
                 .setMyIcon(R.mipmap.ic_map_my_loaction)
-                .setPointRes(array, 7)
-                .setMaxPoint(5)
+                .setPointRes(array, array.length)
                 .setHasArea(true)
                 .setCompass(true)
                 .setOutAreaText(R.string.invalid)
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LngLat lngLat) {
+
 //                        mapView.getBaseMap().deleteAllMarker();
                     }
                 })
@@ -84,20 +89,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //            }
 //        }, 2000);
 
-//        btnPoint.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mHandler.sendEmptyMessageDelayed(2,200);
-//
-//            }
-//        });
-//
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mapView.getBaseMap().deleteFlyPolyline();
-//            }
-//        });
+        btnPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLngLats=new ArrayList<>();
+                mLngLats.addAll(mapView.getBaseMap().getLngLats());
+                mapView.getBaseMap().deleteAllMarker();
+                for (int i = 0; i < mLngLats.size(); i++) {
+                    Log.d("MainActivity",  "坐标点: "+mLngLats.toString());
+                }
+                mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.getBaseMap().deleteMoveTrack();
+            }
+        });
         mHandler.sendEmptyMessageDelayed(3, 2000);
     }
 
@@ -115,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             } else if (msg.what == 3) {
                 Log.d("MainActivity",  "定位: "+mapView.getBaseMap().moveMyLocation());
                 if (!mapView.getBaseMap().moveMyLocation()) {
-
                     mHandler.sendEmptyMessageDelayed(3, 500);
                 }
             }
