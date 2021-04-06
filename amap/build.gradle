@@ -24,7 +24,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //map 高德 3D地图so及jar
-    implementation('com.amap.api:3dmap:latest.integration') {
+    implementation('com.amap.api:3dmap:7.8.0') {
         exclude group: 'com.android.support'
     }
     implementation project(path: ':base_map')
