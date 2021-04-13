@@ -166,6 +166,28 @@ public abstract class BaseMap {
 
 
     /**
+     * 绘制飞机的移动轨迹
+     *
+     * @param lngLats 点
+     * @param color   线条颜色
+     */
+    public void drawMoveTrack(List<LngLat> lngLats, int color) {
+        this.drawMoveTrack(lngLats, 0, color);
+    }
+
+    /**
+     * 绘制飞机的移动轨迹
+     *
+     * @param lngLats 点
+     * @param texture 高德地图线条纹理(谷歌地图不适用)
+     * @param color   线条颜色
+     */
+    public void drawMoveTrack(List<LngLat> lngLats, int texture, int color) {
+        this.drawMoveTrack(lngLats, texture, color, 0, 0);
+    }
+
+
+    /**
      * 设置点击范围无效点的提示
      */
     public BaseMap setInvalidPointRes(int res) {
@@ -275,9 +297,9 @@ public abstract class BaseMap {
     public abstract void deleteFlyPolyline();
 
     /**
-     * 画飞机的移动轨迹
+     * 绘制飞机的移动轨迹
      */
-    public abstract void drawMoveTrack(List<LngLat> lngLats, int color);
+    public abstract void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end);
 
     /**
      * 删除飞机的移动轨迹

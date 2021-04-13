@@ -48,6 +48,8 @@ public class GaodeMapLayout extends BaseMap {
     protected Polyline aDroneTrackline;  //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
+    private Marker startMarker;
+    private Marker endMarker;
 
     public GaodeMapLayout(Context context, Location location) {
         super(context, location);
@@ -348,8 +350,8 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
-    public void drawMoveTrack(List<LngLat> lngLats, int color) {
-        PolylineOptions options = new PolylineOptions().color(color).width(8);
+    public void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end) {
+        PolylineOptions options = new PolylineOptions().setCustomTexture(BitmapDescriptorFactory.fromResource(texture)).color(color).width(8);
         for (int i = 0; i < lngLats.size(); i++) {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -360,6 +362,18 @@ public class GaodeMapLayout extends BaseMap {
         } else {
             aDroneTrackline.setOptions(options);
         }
+
+        if (lngLats.size() > 1 && start != 0 && end != 0) {
+            MarkerOptions startMarkerOptions = new MarkerOptions();
+            startMarkerOptions.position(aDroneTrackline.getPoints().get(0));
+            startMarkerOptions.icon(BitmapDescriptorFactory.fromResource(start));
+            startMarker = aMap.addMarker(startMarkerOptions);
+
+            MarkerOptions endMarkerOptions = new MarkerOptions();
+            endMarkerOptions.position(aDroneTrackline.getPoints().get(aDroneTrackline.getPoints().size() - 1));
+            endMarkerOptions.icon(BitmapDescriptorFactory.fromResource(end));
+            endMarker = aMap.addMarker(endMarkerOptions);
+        }
     }
 
     @Override
@@ -367,6 +381,12 @@ public class GaodeMapLayout extends BaseMap {
         if (aDroneTrackline != null) {
             aDroneTrackline.remove();
             aDroneTrackline = null;
+        }
+        if (startMarker != null) {
+            startMarker.remove();
+        }
+        if (endMarker != null) {
+            endMarker.remove();
         }
     }
 

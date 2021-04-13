@@ -92,11 +92,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         btnPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLngLats=new ArrayList<>();
+                mLngLats = new ArrayList<>();
                 mLngLats.addAll(mapView.getBaseMap().getLngLats());
                 mapView.getBaseMap().deleteAllMarker();
                 for (int i = 0; i < mLngLats.size(); i++) {
-                    Log.d("MainActivity",  "坐标点: "+mLngLats.toString());
+                    Log.d("MainActivity", "坐标点: " + mLngLats.toString());
                 }
                 mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
             }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 mapView.getBaseMap().setDroneLocation(113.847126, 22.607412, count);
                 mHandler.sendEmptyMessageDelayed(2, 200);
             } else if (msg.what == 3) {
-                Log.d("MainActivity",  "定位: "+mapView.getBaseMap().moveMyLocation());
+                Log.d("MainActivity", "定位: " + mapView.getBaseMap().moveMyLocation());
                 if (!mapView.getBaseMap().moveMyLocation()) {
                     mHandler.sendEmptyMessageDelayed(3, 500);
                 }
@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location) {
         mapView.getBaseMap().setMyLocation(location);
-        Log.d("MainActivity",  "定位: "+location);
+        Log.d("MainActivity", "定位: " + location);
 //        mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
-        Log.d("MainActivity", "定位: "+mapView.getBaseMap().getMapReady() + "");
+        Log.d("MainActivity", "定位: " + mapView.getBaseMap().getMapReady() + "");
 
     }
 

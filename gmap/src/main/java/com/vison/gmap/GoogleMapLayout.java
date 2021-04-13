@@ -18,11 +18,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.vison.base_map.BaseMap;
 import com.vison.base_map.CoordinateTransformUtil;
 import com.vison.base_map.LngLat;
@@ -47,6 +49,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     protected Polyline aDroneTrackline;  //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
+    private Marker startMarker;
+    private Marker endMarker;
 
     public GoogleMapLayout(Context context, Location location) {
         super(context, location);
@@ -314,7 +318,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
-    public void drawMoveTrack(List<LngLat> lngLats, int color) {
+    public void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end) {
         PolylineOptions options = new PolylineOptions().color(color).width(8);
         for (int i = 0; i < lngLats.size(); i++) {
             LatLng latLng;
@@ -328,6 +332,18 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             options.add(latLng);
         }
         aDroneTrackline = gMap.addPolyline(options);
+
+        if (lngLats.size() > 1 && start != 0 && end != -0) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(aDroneTrackline.getPoints().get(0));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(start));
+            startMarker = gMap.addMarker(markerOptions);
+
+            MarkerOptions endMarkerOptions = new MarkerOptions();
+            endMarkerOptions.position(aDroneTrackline.getPoints().get(aDroneTrackline.getPoints().size() - 1));
+            endMarkerOptions.icon(BitmapDescriptorFactory.fromResource(end));
+            endMarker = gMap.addMarker(endMarkerOptions);
+        }
     }
 
     @Override
@@ -335,6 +351,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         if (aDroneTrackline != null) {
             aDroneTrackline.remove();
             aDroneTrackline = null;
+        }
+
+        if (startMarker != null) {
+            startMarker.remove();
+        }
+        if (endMarker != null) {
+            endMarker.remove();
         }
     }
 
