@@ -15,7 +15,7 @@ import com.vison.gmap.GMapView;
  * @CreateDate: 2019/8/12 16:49
  * @Description: 类描述
  */
-public class CoustomMapView extends AMapView {
+public class CoustomMapView extends GMapView {
     public CoustomMapView(@NonNull Context context) {
         this(context, null);
     }

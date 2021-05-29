@@ -153,7 +153,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         }
         //设置旋转角度
         aDroneMarker.setAnchor(0.5f, 0.5f);
-        aDroneMarker.setRotation(gMap.getCameraPosition().bearing + angle);
+        aDroneMarker.setRotation(angle);
 
         if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
@@ -371,6 +371,14 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(cameraPosition.target, cameraPosition.zoom, cameraPosition.tilt, orientation));
         gMap.moveCamera(mCameraUpdate);
+    }
+
+    @Override
+    public float bearing() {
+        if (gMap == null) {
+            return 0;
+        }
+        return gMap.getCameraPosition().bearing;
     }
 
     @SuppressLint("MissingPermission")

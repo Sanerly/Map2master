@@ -197,7 +197,7 @@ public class GaodeMapLayout extends BaseMap {
             aDroneMarker.setPosition(latLng);
         }
         aDroneMarker.setAnchor(0.5f, 0.5f);
-        aDroneMarker.setRotateAngle(360 - aMap.getCameraPosition().bearing - angle);
+        aDroneMarker.setRotateAngle(angle);
 
 
         if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
@@ -397,6 +397,14 @@ public class GaodeMapLayout extends BaseMap {
         //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(cameraPosition.target, cameraPosition.zoom, cameraPosition.tilt, orientation));
         aMap.moveCamera(mCameraUpdate);
+    }
+
+    @Override
+    public float bearing() {
+        if (aMap == null) {
+            return 0;
+        }
+        return aMap.getCameraPosition().bearing;
     }
 
     @Override

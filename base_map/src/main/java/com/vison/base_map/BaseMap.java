@@ -312,6 +312,9 @@ public abstract class BaseMap {
     public abstract void onRotate(float orientation);
 
 
+    public abstract float bearing();
+
+
     /**
      * 设置地图配置
      */
