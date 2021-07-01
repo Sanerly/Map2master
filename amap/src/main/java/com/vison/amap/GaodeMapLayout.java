@@ -436,6 +436,21 @@ public class GaodeMapLayout extends BaseMap {
             });
             aMap.setMyLocationEnabled(settings.isMyLocationButtonEnabled());
         }
+
+    }
+
+    @Override
+    public void addMarker(int icon, double longitude, double latitude) {
+        if (aMap == null) {
+            return;
+        }
+        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+        Marker aDroneMarker = aMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(icon)));
+        aDroneMarker.setAnchor(0.5f, 0.5f);
+        aDroneMarker.setRotateAngle(0);
     }
 
 

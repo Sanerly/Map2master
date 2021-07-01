@@ -312,13 +312,23 @@ public abstract class BaseMap {
     public abstract void onRotate(float orientation);
 
 
+    /**
+     * 返航
+     */
     public abstract float bearing();
-
 
     /**
      * 设置地图配置
      */
     public abstract void uiSettings(MapUiSettings settings);
+
+    /**
+     * 添加Marker
+     * @param icon
+     * @param longitude
+     * @param latitude
+     */
+    public abstract void addMarker(int icon, double longitude, double latitude);
 
 
     /**

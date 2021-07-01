@@ -416,6 +416,29 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     }
 
+    @Override
+    public void addMarker(int icon, double longitude, double latitude) {
+        if (gMap == null) {
+            return;
+        }
+        // 坐标转换
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(latitude, longitude);
+        }
+
+        // 设置 飞机 图标
+        Marker marker = gMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(icon)));
+        //设置旋转角度
+        marker.setAnchor(0.5f, 0.5f);
+        marker.setRotation(0);
+
+    }
 
     @Override
     public void onResume() {

@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView.getBaseMap().setMapType(0);
 
 //        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
-        mapView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
-            }
-        }, 2000);
+//        mapView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
+//            }
+//        }, 2000);
 
         btnPoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
 //                mapView.getBaseMap().deleteMoveTrack();
-                mHandler.sendEmptyMessageDelayed(2, 2000);
+//                mHandler.sendEmptyMessageDelayed(2, 2000);
+                mapView.getBaseMap().addMarker(R.mipmap.ic_marker, 113.84213980235995, 22.610208195213353);
             }
         });
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     count = 0;
                 }
 
-                mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, mapView.getBaseMap().bearing()+count);
+                mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, mapView.getBaseMap().bearing() + count);
                 mHandler.sendEmptyMessageDelayed(2, 200);
             } else if (msg.what == 3) {
                 Log.d("MainActivity", "定位: " + mapView.getBaseMap().moveMyLocation());
