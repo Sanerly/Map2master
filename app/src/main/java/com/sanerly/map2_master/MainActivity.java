@@ -107,12 +107,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             public void onClick(View v) {
 //                mapView.getBaseMap().deleteMoveTrack();
 //                mHandler.sendEmptyMessageDelayed(2, 2000);
-                mapView.getBaseMap().addMarker(R.mipmap.ic_marker, 113.84213980235995, 22.610208195213353);
+//                mapView.getBaseMap().addMarker(R.mipmap.ic_marker, 113.84213980235995, 22.610208195213353);
+                distance+=20;
+                mapView.getBaseMap().changeMaxDistance(distance);
             }
         });
 
     }
 
+    int distance = 50;
     int count = 0;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override

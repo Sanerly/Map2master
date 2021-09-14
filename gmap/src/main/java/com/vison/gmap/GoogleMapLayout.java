@@ -441,6 +441,14 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
+    public void changeMaxDistance(int distance) {
+        if (mCircle!=null){
+            mMaxDistance=distance;
+            mCircle.setRadius(distance);
+        }
+    }
+
+    @Override
     public void onResume() {
         if (gMapView == null) {
             return;

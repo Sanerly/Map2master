@@ -453,6 +453,14 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(0);
     }
 
+    @Override
+    public void changeMaxDistance(int distance) {
+        if (mCircle!=null){
+            mMaxDistance=distance;
+            mCircle.setRadius(distance);
+        }
+    }
+
 
     @Override
     public void onResume() {

@@ -108,6 +108,7 @@ public abstract class BaseMap {
         return this;
     }
 
+
     /**
      * 是否显示区域
      */
@@ -330,6 +331,11 @@ public abstract class BaseMap {
      */
     public abstract void addMarker(int icon, double longitude, double latitude);
 
+    /**
+     * 变更地图围栏范围
+     * @param distance
+     */
+    public abstract void changeMaxDistance(int distance);
 
     /**
      * 地图生命周期
