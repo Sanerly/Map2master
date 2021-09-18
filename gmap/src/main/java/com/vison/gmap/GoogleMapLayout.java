@@ -201,6 +201,28 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
+    public boolean moveCurrentLocation(double longitude, double latitude) {
+        // 坐标转换
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(latitude, longitude);
+        }
+        if (gMap != null) {
+            CameraPosition cameraPosition = gMap.getCameraPosition();
+            //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
+            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,
+                    cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
+            gMap.moveCamera(mCameraUpdate);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public void setMapType(int type) {
         switch (type) {
             case 0:
@@ -480,8 +502,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void changeMaxDistance(int distance) {
-        if (mCircle!=null){
-            mMaxDistance=distance;
+        if (mCircle != null) {
+            mMaxDistance = distance;
             mCircle.setRadius(distance);
         }
     }

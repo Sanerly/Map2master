@@ -272,6 +272,11 @@ public abstract class BaseMap {
     public abstract void setDroneLocation(double longitude, double latitude, float angle);
 
     /**
+     * 根据经纬度，移动到当前位置
+     */
+    public abstract boolean  moveCurrentLocation(double longitude, double latitude);
+
+    /**
      * 设置地图类型
      */
     public abstract void setMapType(int type);

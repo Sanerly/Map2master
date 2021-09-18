@@ -115,8 +115,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                distance+=20;
 //                mapView.getBaseMap().changeMaxDistance(distance);
                 //设置航点，不判断范围
-                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353+distance));
+                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353));
                 distance+=0.5;
+                //移动到当前位置
+                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353);
             }
         });
 
