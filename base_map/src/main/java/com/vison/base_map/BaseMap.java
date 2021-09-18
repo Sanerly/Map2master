@@ -282,6 +282,11 @@ public abstract class BaseMap {
     public abstract void addPointMarker(LngLat lngLat);
 
     /**
+     * 设置航点
+     */
+    public abstract void setPointMarker(LngLat lngLat);
+
+    /**
      * 删除全部航点
      */
     public abstract void deleteAllMarker();
@@ -312,9 +317,8 @@ public abstract class BaseMap {
      */
     public abstract void onRotate(float orientation);
 
-
     /**
-     * 返航
+     * 定位精度
      */
     public abstract float bearing();
 
@@ -325,6 +329,7 @@ public abstract class BaseMap {
 
     /**
      * 添加Marker
+     *
      * @param icon
      * @param longitude
      * @param latitude
@@ -333,6 +338,7 @@ public abstract class BaseMap {
 
     /**
      * 变更地图围栏范围
+     *
      * @param distance
      */
     public abstract void changeMaxDistance(int distance);

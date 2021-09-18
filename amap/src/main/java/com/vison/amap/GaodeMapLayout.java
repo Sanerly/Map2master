@@ -300,6 +300,41 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
+    public void setPointMarker(LngLat lngLat) {
+        if (isOnlyLook) {
+            return;
+        }
+
+        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
+        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+
+        if (mLngLats.size() < mMaxPoint) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            if (mPointRes == 0) {
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(mPointResArray[mLngLats.size()]));
+            } else {
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(mPointRes));
+            }
+            Marker marker = aMap.addMarker(markerOptions);
+            aMarkerList.add(marker);
+
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FF959595")).width(8);
+            for (Marker marker1 : aMarkerList) {
+                options.add(marker1.getPosition());
+            }
+
+            if (aPolyline == null) {
+                aPolyline = aMap.addPolyline(options);
+            } else {
+                aPolyline.setOptions(options);
+
+            }
+            mLngLats.add(lngLat);
+        }
+    }
+
+    @Override
     public void deleteAllMarker() {
         mLngLats.clear();
 

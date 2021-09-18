@@ -268,6 +268,44 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
+    public void setPointMarker(LngLat lngLat) {
+        if (isOnlyLook) {
+            return;
+        }
+
+        if (mLngLats.size() < mMaxPoint) {
+            // 坐标转换
+            LatLng latLng;
+            if (isLocationConvert) {
+                double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
+                latLng = new LatLng(gcj02[1], gcj02[0]);
+            } else {
+                latLng = new LatLng(lngLat.getLatitude(), lngLat.getLongitude());
+            }
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            if (mPointRes == 0) {
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(mPointResArray[mLngLats.size()]));
+            } else {
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(mPointRes));
+            }
+            Marker marker = gMap.addMarker(markerOptions);
+            aMarkerList.add(marker);
+
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FF959595")).width(8);
+            for (Marker marker1 : aMarkerList) {
+                options.add(marker1.getPosition());
+            }
+            if (aPolyline == null) {
+                aPolyline = gMap.addPolyline(options);
+            } else {
+                aPolyline.setPoints(options.getPoints());
+            }
+            mLngLats.add(lngLat);
+        }
+    }
+
+    @Override
     public void deleteAllMarker() {
         mLngLats.clear();
 

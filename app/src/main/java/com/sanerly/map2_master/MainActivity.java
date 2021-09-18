@@ -34,8 +34,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
     private LocationUtils mLocationUtils;
-    private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
-            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
+    private int[] array = {R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
+            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
+            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
+            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane,
+            R.mipmap.ic_map_plane, R.mipmap.ic_map_plane, R.mipmap.ic_map_plane};
     private List<LngLat> mLngLats;
 
     @Override
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 mLngLats.addAll(mapView.getBaseMap().getLngLats());
                 mapView.getBaseMap().deleteAllMarker();
                 for (int i = 0; i < mLngLats.size(); i++) {
-                    Log.d("MainActivity", "坐标点: " + mLngLats.toString());
+                    Log.d("MainActivity", "坐标点: " + mLngLats.get(i).toString());
                 }
                 mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
             }
@@ -108,14 +111,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                mapView.getBaseMap().deleteMoveTrack();
 //                mHandler.sendEmptyMessageDelayed(2, 2000);
 //                mapView.getBaseMap().addMarker(R.mipmap.ic_marker, 113.84213980235995, 22.610208195213353);
-                distance+=20;
-                mapView.getBaseMap().changeMaxDistance(distance);
+                //设置范围
+//                distance+=20;
+//                mapView.getBaseMap().changeMaxDistance(distance);
+                //设置航点，不判断范围
+                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353+distance));
+                distance+=0.5;
             }
         });
 
     }
 
-    int distance = 50;
+    int distance = 0;
     int count = 0;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
