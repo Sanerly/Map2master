@@ -29,8 +29,6 @@ public abstract class BaseMap {
     protected boolean isShowLine = false;
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
-    protected double mStartLongitude = 0;
-    protected double mStartLatitude = 0;
     protected OnMapClickListener onMapClickListener;
     private CompassUtils mCompassUtils;
 
@@ -150,21 +148,12 @@ public abstract class BaseMap {
     }
 
     /**
-     * 是否显示飞机起飞点到当前飞机位置的连线
+     * 是否显示飞机Home点到当前飞机位置的连线
      */
-    public BaseMap setShowLine(boolean showLine) {
+    public BaseMap setShowHomeLine(boolean showLine) {
         isShowLine = showLine;
         return this;
     }
-
-    /**
-     * 设置飞机起点坐标
-     */
-    public void setDroneStartPoint(double longitude, double latitude) {
-        this.mStartLongitude = longitude;
-        this.mStartLatitude = latitude;
-    }
-
 
     /**
      * 绘制飞机的移动轨迹
@@ -272,6 +261,11 @@ public abstract class BaseMap {
     public abstract void setDroneLocation(double longitude, double latitude, float angle);
 
     /**
+     * 设置飞机Home点坐标
+     */
+    public abstract void setHomePoint(double longitude, double latitude,int homeRes);
+
+    /**
      * 根据经纬度，移动到当前位置
      */
     public abstract boolean  moveCurrentLocation(double longitude, double latitude);
@@ -305,7 +299,7 @@ public abstract class BaseMap {
     /**
      * 删除起点到当前飞机点的连线
      */
-    public abstract void deleteFlyPolyline();
+    public abstract void deleteHomePolyline();
 
     /**
      * 绘制飞机的移动轨迹

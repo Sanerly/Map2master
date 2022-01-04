@@ -29,6 +29,12 @@
             android:layout_width="wrap_content"
             android:text="清除连线"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_hide"
+            android:layout_width="wrap_content"
+            android:text="隐藏"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 

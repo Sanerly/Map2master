@@ -44,12 +44,15 @@ public class GaodeMapLayout extends BaseMap {
     protected Marker aMyMarker;          // 手机定位点
     protected Marker aDroneMarker;      // 飞机
     protected Polyline aPolyline;       // 指点飞行路径
-    protected Polyline aFlyPolyline;    // 起飞点到当前位置连线
+    protected Polyline aHomePolyline;    // Home点到当前位置连线
     protected Polyline aDroneTrackline;  //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
     private Marker startMarker;
     private Marker endMarker;
+    protected double mHomeLon = 0;
+    protected double mHomeLat = 0;
+    private Marker homeMarker;
 
     public GaodeMapLayout(Context context, Location location) {
         super(context, location);
@@ -200,15 +203,15 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (isShowLine && mStartLongitude != 0 && mStartLongitude != 0) {
+        if (isShowLine && mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
-            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mStartLongitude, mStartLatitude);
+            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
             options.add(aDroneMarker.getPosition());
-            if (aFlyPolyline == null) {
-                aFlyPolyline = aMap.addPolyline(options);
+            if (aHomePolyline == null) {
+                aHomePolyline = aMap.addPolyline(options);
             } else {
-                aFlyPolyline.setOptions(options);
+                aHomePolyline.setOptions(options);
             }
         }
         if (isShowInfoWindow) {
@@ -236,6 +239,19 @@ public class GaodeMapLayout extends BaseMap {
         }
 
 
+    }
+
+    @Override
+    public void setHomePoint(double longitude, double latitude, int homeRes) {
+        this.mHomeLon=longitude;
+        this.mHomeLat=latitude;
+        if (homeRes!=0){
+            double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
+            MarkerOptions startMarkerOptions = new MarkerOptions();
+            startMarkerOptions.position(new LatLng(gcj02Line[1], gcj02Line[0]));
+            startMarkerOptions.icon(BitmapDescriptorFactory.fromResource(homeRes));
+            homeMarker = aMap.addMarker(startMarkerOptions);
+        }
     }
 
     @Override
@@ -394,10 +410,10 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
-    public void deleteFlyPolyline() {
-        if (aFlyPolyline != null) {
-            aFlyPolyline.remove();
-            aFlyPolyline = null;
+    public void deleteHomePolyline() {
+        if (aHomePolyline != null) {
+            aHomePolyline.remove();
+            aHomePolyline = null;
         }
     }
 

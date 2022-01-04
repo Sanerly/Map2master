@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private CoustomMapView mapView;
     private Button btnPoint;
     private Button btnDelete;
+    private Button btnHide;
 
 
     private LocationUtils mLocationUtils;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView = findViewById(R.id.cous_tom_map_view);
         btnPoint = findViewById(R.id.btn_point);
         btnDelete = findViewById(R.id.btn_delete);
+        btnHide = findViewById(R.id.btn_hide);
         setPermissions();
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setCompass(true)
                 .setOutAreaText(R.string.invalid)
                 .setMaxDistance(50)
-                .setShowLine(true)
+                .setShowHomeLine(true)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
                 .setGoogleLocationConvert(true)
@@ -95,13 +97,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         btnPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLngLats = new ArrayList<>();
-                mLngLats.addAll(mapView.getBaseMap().getLngLats());
-                mapView.getBaseMap().deleteAllMarker();
-                for (int i = 0; i < mLngLats.size(); i++) {
-                    Log.d("MainActivity", "坐标点: " + mLngLats.get(i).toString());
-                }
-                mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
+                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610208195213353, R.mipmap.ic_map_home);
+//                mLngLats = new ArrayList<>();
+//                mLngLats.addAll(mapView.getBaseMap().getLngLats());
+//                mapView.getBaseMap().deleteAllMarker();
+//                for (int i = 0; i < mLngLats.size(); i++) {
+//                    Log.d("MainActivity", "坐标点: " + mLngLats.get(i).toString());
+//                }
+//                mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
             }
         });
 
@@ -115,10 +118,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                distance+=20;
 //                mapView.getBaseMap().changeMaxDistance(distance);
                 //设置航点，不判断范围
-                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353));
-                distance+=0.5;
-                //移动到当前位置
-                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353);
+//                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353));
+//                distance += 0.5;
+//                //移动到当前位置
+//                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353);
+
+                mapView.getBaseMap().setDroneLocation(113.85213980235995, 22.610208195213353, 0);
+            }
+        });
+
+        btnHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.getBaseMap().deleteHomePolyline();
             }
         });
 
