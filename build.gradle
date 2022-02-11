@@ -7,7 +7,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,8 +29,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    VERSION_CODE = 62
-    VERSION_NAME = "1.6.2"
+    VERSION_CODE = 63
+    VERSION_NAME = "1.6.3"
     COMPILE_SDKVERSION=28
     MIN_SDKVERSION=19
     TARGET_SDKVERSION=28
