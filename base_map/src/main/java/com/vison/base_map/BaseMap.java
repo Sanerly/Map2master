@@ -26,7 +26,6 @@ public abstract class BaseMap {
     protected boolean isHasArea = true;
     protected boolean isMapReady = false;        //地图准备就绪
     protected boolean isOnlyLook = false;
-    protected boolean isShowLine = false;
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
     protected OnMapClickListener onMapClickListener;
@@ -148,14 +147,6 @@ public abstract class BaseMap {
     }
 
     /**
-     * 是否显示飞机Home点到当前飞机位置的连线
-     */
-    public BaseMap setShowHomeLine(boolean showLine) {
-        isShowLine = showLine;
-        return this;
-    }
-
-    /**
      * 绘制飞机的移动轨迹
      *
      * @param lngLats 点
@@ -266,6 +257,11 @@ public abstract class BaseMap {
     public abstract void setHomePoint(double longitude, double latitude,int homeRes);
 
     /**
+     * 是否显示飞机Home点到当前飞机位置的连线
+     */
+    public abstract void  setShowHomeLine(boolean visible);
+
+    /**
      * 根据经纬度，移动到当前位置
      */
     public abstract boolean  moveCurrentLocation(double longitude, double latitude);
@@ -297,9 +293,14 @@ public abstract class BaseMap {
 
 
     /**
-     * 删除起点到当前飞机点的连线
+     * 删除HOME到当前飞机点的连线
      */
     public abstract void deleteHomePolyline();
+
+    /**
+     * 删除HOME点
+     */
+    public abstract void deleteHomeMarker();
 
     /**
      * 绘制飞机的移动轨迹

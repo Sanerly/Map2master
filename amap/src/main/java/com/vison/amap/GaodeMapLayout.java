@@ -14,7 +14,6 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Circle;
@@ -203,7 +202,7 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (isShowLine && mHomeLon != 0 && mHomeLat != 0) {
+        if (mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -250,7 +249,17 @@ public class GaodeMapLayout extends BaseMap {
             MarkerOptions startMarkerOptions = new MarkerOptions();
             startMarkerOptions.position(new LatLng(gcj02Line[1], gcj02Line[0]));
             startMarkerOptions.icon(BitmapDescriptorFactory.fromResource(homeRes));
+            if (homeMarker!=null){
+                homeMarker.remove();
+            }
             homeMarker = aMap.addMarker(startMarkerOptions);
+        }
+    }
+
+    @Override
+    public void setShowHomeLine(boolean visible) {
+        if (aHomePolyline != null) {
+            aHomePolyline.setVisible(visible);
         }
     }
 
@@ -414,6 +423,13 @@ public class GaodeMapLayout extends BaseMap {
         if (aHomePolyline != null) {
             aHomePolyline.remove();
             aHomePolyline = null;
+        }
+    }
+
+    @Override
+    public void deleteHomeMarker() {
+        if (homeMarker!=null){
+            homeMarker.remove();
         }
     }
 

@@ -18,13 +18,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
 import com.vison.base_map.BaseMap;
 import com.vison.base_map.CoordinateTransformUtil;
 import com.vison.base_map.LngLat;
@@ -158,7 +156,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(angle);
 
-        if (isShowLine && mHomeLon != 0 && mHomeLat != 0) {
+        if (mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             LatLng latLngLine;
             if (isLocationConvert) {
@@ -175,6 +173,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 aHomePolyline.setPoints(options.getPoints());
             }
         }
+
         if (isShowInfoWindow) {
             GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
                 // marker 对象被点击时回调的接口
@@ -219,7 +218,17 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.icon(BitmapDescriptorFactory.fromResource(homeRes));
+            if (homeMarker!=null){
+                homeMarker.remove();
+            }
             homeMarker = gMap.addMarker(markerOptions);
+        }
+    }
+
+    @Override
+    public void setShowHomeLine(boolean visible) {
+        if (aHomePolyline != null) {
+            aHomePolyline.setVisible(visible);
         }
     }
 
@@ -397,6 +406,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         if (aHomePolyline != null) {
             aHomePolyline.remove();
             aHomePolyline = null;
+        }
+    }
+
+    @Override
+    public void deleteHomeMarker() {
+        if (homeMarker!=null){
+            homeMarker.remove();
         }
     }
 

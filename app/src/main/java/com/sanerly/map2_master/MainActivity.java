@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private Button btnPoint;
     private Button btnDelete;
     private Button btnHide;
+    private boolean isShowHomeLine=false;
 
 
     private LocationUtils mLocationUtils;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setCompass(true)
                 .setOutAreaText(R.string.invalid)
                 .setMaxDistance(50)
-                .setShowHomeLine(true)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
                 .setGoogleLocationConvert(true)
@@ -130,7 +130,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         btnHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapView.getBaseMap().deleteHomePolyline();
+                isShowHomeLine=!isShowHomeLine;
+                mapView.getBaseMap().setShowHomeLine(isShowHomeLine);
+//                mapView.getBaseMap().deleteHomePolyline();
+//                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610308195213353, R.mipmap.ic_map_home);
             }
         });
 
