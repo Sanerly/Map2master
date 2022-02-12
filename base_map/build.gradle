@@ -33,8 +33,8 @@ afterEvaluate {
             // Creates a Maven publication called "release".
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.sanerly.map2_master'
-                artifactId = 'Map2master'
+                groupId = 'com.github.sanerly'
+                artifactId = 'base_map'
                 version = rootProject.ext.VERSION_NAME
             }
         }
