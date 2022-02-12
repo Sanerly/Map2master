@@ -29,3 +29,17 @@ dependencies {
     }
     implementation project(path: ':base_map')
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.sanerly.map2_master'
+                artifactId = 'Map2master'
+                version = rootProject.ext.VERSION_NAME
+            }
+        }
+    }
+}
