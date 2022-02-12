@@ -202,7 +202,7 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (mHomeLon != 0 && mHomeLat != 0) {
+        if (mHomeLon != 0 && mHomeLat != 0 && isShowHomeLine) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -258,6 +258,7 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setShowHomeLine(boolean visible) {
+        isShowHomeLine=visible;
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }

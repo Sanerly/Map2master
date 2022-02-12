@@ -156,7 +156,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(angle);
 
-        if (mHomeLon != 0 && mHomeLat != 0) {
+        if (mHomeLon != 0 && mHomeLat != 0 && isShowHomeLine) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             LatLng latLngLine;
             if (isLocationConvert) {
@@ -227,6 +227,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setShowHomeLine(boolean visible) {
+        isShowHomeLine=visible;
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }

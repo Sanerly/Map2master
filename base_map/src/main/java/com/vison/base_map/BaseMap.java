@@ -26,6 +26,7 @@ public abstract class BaseMap {
     protected boolean isHasArea = true;
     protected boolean isMapReady = false;        //地图准备就绪
     protected boolean isOnlyLook = false;
+    protected boolean isShowHomeLine = false;
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
     protected OnMapClickListener onMapClickListener;
