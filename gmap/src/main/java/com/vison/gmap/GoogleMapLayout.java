@@ -592,10 +592,10 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         //放大缩小按钮
         uiSettings.setZoomControlsEnabled(false);
         // 设置缩放级别
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(19);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(mZoomLevel);
         gMap.animateCamera(zoom);
         // 设置最小缩放级别为2km
-        gMap.setMinZoomPreference(12);
+        gMap.setMinZoomPreference(mMinZoomLevel);
 
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

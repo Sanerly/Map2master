@@ -81,9 +81,9 @@ public class GaodeMapLayout extends BaseMap {
         uiSettings.setCompassEnabled(false);
 
         // 设置最小缩放级别为2km
-        aMap.setMinZoomLevel(12);
+        aMap.setMinZoomLevel(mMinZoomLevel);
         // 设置缩放级别
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(22));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(mZoomLevel));
 
         aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override

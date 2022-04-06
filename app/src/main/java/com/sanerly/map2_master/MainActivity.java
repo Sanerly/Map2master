@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMaxDistance(50)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
+                .setZoomLevel(15)
                 .setGoogleLocationConvert(true)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override

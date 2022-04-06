@@ -23,6 +23,8 @@ public abstract class BaseMap {
     protected int mInvalidPointRes;
     protected int mMaxPoint = 15;
     protected int mMaxDistance = 50;
+    protected int mMinZoomLevel = 12;
+    protected int mZoomLevel = 22;
     protected boolean isHasArea = true;
     protected boolean isMapReady = false;        //地图准备就绪
     protected boolean isOnlyLook = false;
@@ -106,6 +108,15 @@ public abstract class BaseMap {
         return this;
     }
 
+    public BaseMap setMinZoomLevel(int mMinZoomLevel) {
+        this.mMinZoomLevel = mMinZoomLevel;
+        return this;
+    }
+
+    public BaseMap setZoomLevel(int mZoomLevel) {
+        this.mZoomLevel = mZoomLevel;
+        return this;
+    }
 
     /**
      * 是否显示区域
