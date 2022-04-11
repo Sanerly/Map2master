@@ -107,9 +107,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 mCircle = gMap.addCircle(new CircleOptions()
                         .center(latLng)
                         .radius(mMaxDistance)
-                        .fillColor(Color.argb(50, 2, 146, 255))
-                        .strokeColor(Color.argb(50, 1, 1, 1))
-                        .strokeWidth(3));
+                        .fillColor(mFillColor).
+                        strokeColor(mStrokeColor).
+                        strokeWidth(mStrokeWidth));
             } else {
                 mCircle.setCenter(latLng);
             }
@@ -204,9 +204,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setHomePoint(double longitude, double latitude, int homeRes) {
-        this.mHomeLon=longitude;
-        this.mHomeLat=latitude;
-        if (homeRes!=0){
+        this.mHomeLon = longitude;
+        this.mHomeLat = latitude;
+        if (homeRes != 0) {
             LatLng latLng;
             if (isLocationConvert) {
                 double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
@@ -218,7 +218,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.icon(BitmapDescriptorFactory.fromResource(homeRes));
-            if (homeMarker!=null){
+            if (homeMarker != null) {
                 homeMarker.remove();
             }
             homeMarker = gMap.addMarker(markerOptions);
@@ -227,7 +227,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setShowHomeLine(boolean visible) {
-        isShowHomeLine=visible;
+        isShowHomeLine = visible;
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }
@@ -412,7 +412,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void deleteHomeMarker() {
-        if (homeMarker!=null){
+        if (homeMarker != null) {
             homeMarker.remove();
         }
     }

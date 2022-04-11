@@ -157,9 +157,9 @@ public class GaodeMapLayout extends BaseMap {
                 mCircle = aMap.addCircle(new CircleOptions().
                         center(latLng).
                         radius(mMaxDistance).
-                        fillColor(Color.argb(50, 2, 146, 255)).
-                        strokeColor(Color.argb(50, 1, 1, 1)).
-                        strokeWidth(3));
+                        fillColor(mFillColor).
+                        strokeColor(mStrokeColor).
+                        strokeWidth(mStrokeWidth));
             } else {
                 mCircle.setCenter(latLng);
             }

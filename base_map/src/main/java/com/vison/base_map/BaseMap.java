@@ -1,6 +1,7 @@
 package com.vison.base_map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.widget.FrameLayout;
 
@@ -23,6 +24,9 @@ public abstract class BaseMap {
     protected int mInvalidPointRes;
     protected int mMaxPoint = 15;
     protected int mMaxDistance = 50;
+    protected int mFillColor = Color.argb(50, 2, 146, 255);
+    protected int mStrokeColor = Color.argb(50, 1, 1, 1);
+    protected int mStrokeWidth = 3;
     protected int mMinZoomLevel = 12;
     protected int mZoomLevel = 22;
     protected boolean isHasArea = true;
@@ -168,6 +172,21 @@ public abstract class BaseMap {
         this.drawMoveTrack(lngLats, 0, color);
     }
 
+    public BaseMap setFillColor(int fillColor) {
+        this.mFillColor = fillColor;
+        return this;
+    }
+
+    public BaseMap setStrokeColor(int strokeColor) {
+        this.mStrokeColor = strokeColor;
+        return this;
+    }
+
+    public BaseMap setStrokeWidth(int strokeWidth) {
+        this.mStrokeWidth = strokeWidth;
+        return this;
+    }
+
     /**
      * 绘制飞机的移动轨迹
      *
@@ -188,6 +207,11 @@ public abstract class BaseMap {
         return this;
     }
 
+    /**
+     * 显示info弹框
+     * @param show
+     * @return
+     */
     public BaseMap setShowInfoWindow(boolean show) {
         this.isShowInfoWindow = show;
         return this;
@@ -266,17 +290,17 @@ public abstract class BaseMap {
     /**
      * 设置飞机Home点坐标
      */
-    public abstract void setHomePoint(double longitude, double latitude,int homeRes);
+    public abstract void setHomePoint(double longitude, double latitude, int homeRes);
 
     /**
      * 是否显示飞机Home点到当前飞机位置的连线
      */
-    public abstract void  setShowHomeLine(boolean visible);
+    public abstract void setShowHomeLine(boolean visible);
 
     /**
      * 根据经纬度，移动到当前位置
      */
-    public abstract boolean  moveCurrentLocation(double longitude, double latitude);
+    public abstract boolean moveCurrentLocation(double longitude, double latitude);
 
     /**
      * 设置地图类型

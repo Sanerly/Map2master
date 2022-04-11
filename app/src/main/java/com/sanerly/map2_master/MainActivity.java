@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
                 .setZoomLevel(15)
+                .setFillColor(Color.parseColor("#154086FF"))
+                .setStrokeColor(Color.parseColor("#093BB9"))
+                .setStrokeWidth(6)
                 .setGoogleLocationConvert(true)
                 .setOnMapClickListener(new BaseMap.OnMapClickListener() {
                     @Override
