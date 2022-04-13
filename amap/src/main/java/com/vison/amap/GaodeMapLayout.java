@@ -126,7 +126,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aMyMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
+                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -172,7 +172,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aDroneMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
+                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -273,7 +273,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : 19, cameraPosition.tilt, cameraPosition.bearing));
+                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -436,10 +436,16 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end) {
+        if (onMoveTrackListener!=null){
+            onMoveTrackListener.onDrawState(true);
+        }
         PolylineOptions options = new PolylineOptions().setCustomTexture(BitmapDescriptorFactory.fromResource(texture)).color(color).width(8);
         for (int i = 0; i < lngLats.size(); i++) {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
+            if (onMoveTrackListener!=null){
+                onMoveTrackListener.onDrawPosition(i,lngLats.get(i).getLongitude(),lngLats.get(i).getLatitude());
+            }
         }
 
         if (aDroneTrackline == null) {
@@ -458,6 +464,9 @@ public class GaodeMapLayout extends BaseMap {
             endMarkerOptions.position(aDroneTrackline.getPoints().get(aDroneTrackline.getPoints().size() - 1));
             endMarkerOptions.icon(BitmapDescriptorFactory.fromResource(end));
             endMarker = aMap.addMarker(endMarkerOptions);
+        }
+        if (onMoveTrackListener!=null){
+            onMoveTrackListener.onDrawState(false);
         }
     }
 

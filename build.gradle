@@ -28,8 +28,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    VERSION_CODE = 68
-    VERSION_NAME = "1.6.53"
+    VERSION_CODE = 69
+    VERSION_NAME = "1.6.54"
     COMPILE_SDKVERSION=28
     MIN_SDKVERSION=19
     TARGET_SDKVERSION=28

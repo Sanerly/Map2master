@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.widget.FrameLayout;
 
+import com.vison.base_map.interfaces.OnMoveTrackListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public abstract class BaseMap {
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
     protected OnMapClickListener onMapClickListener;
+    protected OnMoveTrackListener onMoveTrackListener;
     private CompassUtils mCompassUtils;
 
     public BaseMap(Context context, Location location) {
@@ -209,6 +212,7 @@ public abstract class BaseMap {
 
     /**
      * 显示info弹框
+     *
      * @param show
      * @return
      */
@@ -242,6 +246,14 @@ public abstract class BaseMap {
      */
     public BaseMap setOnMapClickListener(OnMapClickListener listener) {
         this.onMapClickListener = listener;
+        return this;
+    }
+
+    /**
+     * 设置绘制移动轨迹监听
+     */
+    public BaseMap setOnMoveTrackListener(OnMoveTrackListener onMoveTrackListener) {
+        this.onMoveTrackListener = onMoveTrackListener;
         return this;
     }
 

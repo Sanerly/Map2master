@@ -3,16 +3,22 @@ package com.sanerly.map2_master;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -32,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private Button btnPoint;
     private Button btnDelete;
     private Button btnHide;
-    private boolean isShowHomeLine=false;
+    private TextView tvLocationInfo;
+    private boolean isShowHomeLine = false;
 
 
     private LocationUtils mLocationUtils;
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         btnPoint = findViewById(R.id.btn_point);
         btnDelete = findViewById(R.id.btn_delete);
         btnHide = findViewById(R.id.btn_hide);
+        tvLocationInfo = findViewById(R.id.tv_location_info);
         setPermissions();
         mLocationUtils = new LocationUtils(this);
         mLocationUtils.setLocationListener(this);
@@ -74,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMaxDistance(50)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
-                .setZoomLevel(15)
+                .setZoomLevel(9)
+                .setMinZoomLevel(3)
                 .setFillColor(Color.parseColor("#154086FF"))
                 .setStrokeColor(Color.parseColor("#093BB9"))
                 .setStrokeWidth(6)
@@ -101,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         btnPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610208195213353, R.mipmap.ic_map_home);
+//                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610208195213353, R.mipmap.ic_map_home);
 //                mLngLats = new ArrayList<>();
 //                mLngLats.addAll(mapView.getBaseMap().getLngLats());
 //                mapView.getBaseMap().deleteAllMarker();
@@ -109,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                    Log.d("MainActivity", "坐标点: " + mLngLats.get(i).toString());
 //                }
 //                mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
+
+//                updateLocation(location);
             }
         });
 
@@ -143,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-    int distance = 0;
     int count = 0;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -165,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return false;
         }
     });
+
 
     @Override
     public void onLocationChanged(Location location) {
