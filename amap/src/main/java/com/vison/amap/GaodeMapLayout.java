@@ -265,7 +265,7 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
-    public boolean moveCurrentLocation(double longitude, double latitude) {
+    public boolean moveCurrentLocation(double longitude, double latitude, float tilt) {
         // 坐标转换
         double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
         LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
@@ -273,7 +273,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
+                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {

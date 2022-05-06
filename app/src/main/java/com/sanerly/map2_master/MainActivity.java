@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMaxDistance(50)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
-                .setZoomLevel(9)
+                .setZoomLevel(19)
                 .setMinZoomLevel(3)
                 .setFillColor(Color.parseColor("#154086FF"))
                 .setStrokeColor(Color.parseColor("#093BB9"))
@@ -136,9 +136,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                mapView.getBaseMap().setPointMarker(new LngLat(113.84213980235995, 22.610208195213353));
 //                distance += 0.5;
 //                //移动到当前位置
-//                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353);
+                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353,45);
 
-                mapView.getBaseMap().setDroneLocation(113.85213980235995, 22.610208195213353, 0);
+//                mapView.getBaseMap().setDroneLocation(113.85213980235995, 22.610208195213353, 0);
             }
         });
 

@@ -312,7 +312,7 @@ public abstract class BaseMap {
     /**
      * 根据经纬度，移动到当前位置
      */
-    public abstract boolean moveCurrentLocation(double longitude, double latitude);
+    public abstract boolean moveCurrentLocation(double longitude, double latitude,float tilt);
 
     /**
      * 设置地图类型
