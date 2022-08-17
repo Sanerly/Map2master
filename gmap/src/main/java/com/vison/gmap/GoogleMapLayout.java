@@ -117,6 +117,36 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     }
 
     @Override
+    public void setResetMaxDistance(int distance) {
+        if (!isMapReady || mLocation == null) {
+            return;
+        }
+        mMaxDistance = distance;
+        // 坐标转换
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        }
+
+        if (isHasArea) {
+            if (mCircle == null) {
+                mCircle = gMap.addCircle(new CircleOptions()
+                        .center(latLng)
+                        .radius(distance)
+                        .fillColor(mFillColor).
+                                strokeColor(mStrokeColor).
+                                strokeWidth(mStrokeWidth));
+            } else {
+                mCircle.setCenter(latLng);
+                mCircle.setRadius(distance);
+            }
+        }
+    }
+
+    @Override
     public boolean moveDroneLocation() {
         if (aDroneMarker != null) {
             CameraPosition cameraPosition = gMap.getCameraPosition();

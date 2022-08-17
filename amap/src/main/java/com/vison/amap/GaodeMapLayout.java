@@ -162,6 +162,30 @@ public class GaodeMapLayout extends BaseMap {
                         strokeWidth(mStrokeWidth));
             } else {
                 mCircle.setCenter(latLng);
+                mCircle.setRadius(mMaxDistance);
+            }
+        }
+    }
+
+    @Override
+    public void setResetMaxDistance(int distance) {
+        if (!isMapReady || mLocation == null) {
+            return;
+        }
+        mMaxDistance = distance;
+        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
+        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+        if (isHasArea) {
+            if (mCircle == null) {
+                mCircle = aMap.addCircle(new CircleOptions().
+                        center(latLng).
+                        radius(distance).
+                        fillColor(mFillColor).
+                        strokeColor(mStrokeColor).
+                        strokeWidth(mStrokeWidth));
+            } else {
+                mCircle.setCenter(latLng);
+                mCircle.setRadius(distance);
             }
         }
     }

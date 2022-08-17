@@ -288,6 +288,11 @@ public abstract class BaseMap {
      */
     public abstract void setMyLocation(Location location);
 
+    /**
+     * 重置航点范围
+     * @param distance
+     */
+    public abstract void setResetMaxDistance(int distance);
 
     /**
      * 移动到飞机为中心位置
