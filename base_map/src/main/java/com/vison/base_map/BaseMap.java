@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.widget.FrameLayout;
 
+import com.vison.base_map.bean.FeaturesBean;
 import com.vison.base_map.interfaces.OnMoveTrackListener;
 
 import java.util.ArrayList;
@@ -436,5 +437,42 @@ public abstract class BaseMap {
         }
     }
 
+    /**
+     * 添加危险区域
+     * (多边形)
+     */
+    public void addDangerPolygon(FeaturesBean featuresBean) {
 
+    }
+
+    /**
+     * 添加危险区域
+     * (点)
+     */
+    public void addDangerPoint(FeaturesBean featuresBean) {
+
+    }
+
+    /**
+     * 添加危险区域
+     * (线)
+     */
+    public void addDangerLine(FeaturesBean featuresBean) {
+
+    }
+
+    /**
+     * 清除 danger view
+     */
+    public void cleanNoFlyZone() {
+
+    }
+
+
+    /**
+     * 检查是否在禁飞区内
+     */
+    public boolean checkInNoFlyZone(double longitude, double latitude) {
+        return false;
+    }
 }
