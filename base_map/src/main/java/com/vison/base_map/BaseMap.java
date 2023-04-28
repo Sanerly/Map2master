@@ -397,6 +397,35 @@ public abstract class BaseMap {
      */
     public abstract void changeMaxDistance(int distance);
 
+
+    /**
+     * 添加危险区域
+     * (多边形)
+     */
+    public abstract void addDangerPolygon(FeaturesBean featuresBean);
+
+    /**
+     * 添加危险区域
+     * (点)
+     */
+    public abstract void addDangerPoint(FeaturesBean featuresBean);
+
+    /**
+     * 添加危险区域
+     * (线)
+     */
+    public abstract void addDangerLine(FeaturesBean featuresBean);
+
+    /**
+     * 清除 danger view
+     */
+    public abstract void cleanNoFlyZone();
+
+
+    /**
+     * 检查是否在禁飞区内
+     */
+    public abstract boolean checkInNoFlyZone(double longitude, double latitude);
     /**
      * 地图生命周期
      */
@@ -437,42 +466,4 @@ public abstract class BaseMap {
         }
     }
 
-    /**
-     * 添加危险区域
-     * (多边形)
-     */
-    public void addDangerPolygon(FeaturesBean featuresBean) {
-
-    }
-
-    /**
-     * 添加危险区域
-     * (点)
-     */
-    public void addDangerPoint(FeaturesBean featuresBean) {
-
-    }
-
-    /**
-     * 添加危险区域
-     * (线)
-     */
-    public void addDangerLine(FeaturesBean featuresBean) {
-
-    }
-
-    /**
-     * 清除 danger view
-     */
-    public void cleanNoFlyZone() {
-
-    }
-
-
-    /**
-     * 检查是否在禁飞区内
-     */
-    public boolean checkInNoFlyZone(double longitude, double latitude) {
-        return false;
-    }
 }
