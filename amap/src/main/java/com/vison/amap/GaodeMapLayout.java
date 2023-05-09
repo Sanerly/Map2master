@@ -50,7 +50,8 @@ public class GaodeMapLayout extends BaseMap {
     protected Marker aMyMarker;          // 手机定位点
     protected Marker aDroneMarker;      // 飞机
     protected Polyline aPolyline;       // 指点飞行路径
-    protected Polyline aHomePolyline;    // Home点到当前位置连线
+    protected Polyline aHomePolyline;    // Home点到当前飞机位置连线
+    protected Polyline aPhonePolyline;    // 手机定位点到当前位置连线
     protected Polyline aDroneTrackline;  //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
@@ -236,17 +237,32 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (mHomeLon != 0 && mHomeLat != 0 && isShowHomeLine) {
+        if (mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
             options.add(aDroneMarker.getPosition());
             if (aHomePolyline == null) {
                 aHomePolyline = aMap.addPolyline(options);
+                aHomePolyline.setVisible(false);
             } else {
                 aHomePolyline.setOptions(options);
             }
         }
+
+        if (mLocation != null) {
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
+            double[] gcj02p = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
+            options.add(new LatLng(gcj02p[1], gcj02p[0]));
+            options.add(aDroneMarker.getPosition());
+            if (aPhonePolyline == null) {
+                aPhonePolyline = aMap.addPolyline(options);
+                aPhonePolyline.setVisible(false);
+            } else {
+                aPhonePolyline.setOptions(options);
+            }
+        }
+
         if (isShowInfoWindow) {
             AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
                 // marker 对象被点击时回调的接口
@@ -292,10 +308,17 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setShowHomeLine(boolean visible) {
-        isShowHomeLine=visible;
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }
+    }
+
+    @Override
+    public void setShowPhoneLine(boolean visible) {
+        if (aPhonePolyline != null) {
+            aPhonePolyline.setVisible(visible);
+        }
+
     }
 
     @Override

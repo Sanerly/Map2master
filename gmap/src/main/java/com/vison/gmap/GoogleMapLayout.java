@@ -48,11 +48,12 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     protected MapView gMapView;
     protected GoogleMap gMap;
-    protected Marker aMyMarker;      // 手机定位点
-    protected Marker aDroneMarker;      // 飞机
-    protected Polyline aPolyline;             // 指点飞行路径
-    protected Polyline aHomePolyline;             // 起飞点到当前位置连线
-    protected Polyline aDroneTrackline;  //飞机轨迹路径
+    protected Marker aMyMarker;             // 手机定位点
+    protected Marker aDroneMarker;          // 飞机
+    protected Polyline aPolyline;           // 指点飞行路径
+    protected Polyline aHomePolyline;       // 起飞点到当前位置连线
+    protected Polyline aPhonePolyline;      // 手机定位点到当前位置连线
+    protected Polyline aDroneTrackline;     //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
     private Marker startMarker;
@@ -197,7 +198,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         aDroneMarker.setAnchor(0.5f, 0.5f);
         aDroneMarker.setRotation(angle);
 
-        if (mHomeLon != 0 && mHomeLat != 0 && isShowHomeLine) {
+        if (mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             LatLng latLngLine;
             if (isLocationConvert) {
@@ -210,8 +211,22 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             options.add(aDroneMarker.getPosition());
             if (aHomePolyline == null) {
                 aHomePolyline = gMap.addPolyline(options);
+                aHomePolyline.setVisible(false);
             } else {
                 aHomePolyline.setPoints(options.getPoints());
+            }
+        }
+
+        if (mLocation != null) {
+            PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
+            double[] gcj02p = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
+            options.add(new LatLng(gcj02p[1], gcj02p[0]));
+            options.add(aDroneMarker.getPosition());
+            if (aPhonePolyline == null) {
+                aPhonePolyline = gMap.addPolyline(options);
+                aPhonePolyline.setVisible(false);
+            } else {
+                aPhonePolyline.setPoints(options.getPoints());
             }
         }
 
@@ -268,9 +283,15 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setShowHomeLine(boolean visible) {
-        isShowHomeLine = visible;
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
+        }
+    }
+
+    @Override
+    public void setShowPhoneLine(boolean visible) {
+        if (aPhonePolyline != null) {
+            aPhonePolyline.setVisible(visible);
         }
     }
 

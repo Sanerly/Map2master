@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                mapView.getBaseMap().drawMoveTrack(mLngLats, Color.parseColor("#FFFF0000"));
 
 //                updateLocation(location);
+
+                mapView.getBaseMap().deleteHomePolyline();
+//                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610308195213353, R.mipmap.ic_map_home);
+                mapView.getBaseMap().setHomePoint(113.841444,22.59595, R.mipmap.ic_map_home);
             }
         });
 
@@ -138,9 +142,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                //移动到当前位置
 //                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353,45);
 
-//                mapView.getBaseMap().setDroneLocation(113.85213980235995, 22.610208195213353, 0);
+                mapView.getBaseMap().setDroneLocation(113.85213980235995, 22.610208195213353, 0);
 
-                mapView.getBaseMap().setResetMaxDistance(800);
+//                mapView.getBaseMap().setResetMaxDistance(800);
             }
         });
 
@@ -149,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             public void onClick(View v) {
                 isShowHomeLine=!isShowHomeLine;
                 mapView.getBaseMap().setShowHomeLine(isShowHomeLine);
-//                mapView.getBaseMap().deleteHomePolyline();
-//                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610308195213353, R.mipmap.ic_map_home);
+                mapView.getBaseMap().setShowPhoneLine(isShowHomeLine);
             }
         });
 

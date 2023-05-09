@@ -35,7 +35,6 @@ public abstract class BaseMap {
     protected boolean isHasArea = true;
     protected boolean isMapReady = false;        //地图准备就绪
     protected boolean isOnlyLook = false;
-    protected boolean isShowHomeLine = false;
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
     protected OnMapClickListener onMapClickListener;
@@ -314,6 +313,8 @@ public abstract class BaseMap {
      * 是否显示飞机Home点到当前飞机位置的连线
      */
     public abstract void setShowHomeLine(boolean visible);
+
+    public abstract void setShowPhoneLine(boolean visible);
 
     /**
      * 根据经纬度，移动到当前位置
