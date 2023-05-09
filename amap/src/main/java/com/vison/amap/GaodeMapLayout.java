@@ -485,6 +485,14 @@ public class GaodeMapLayout extends BaseMap {
     }
 
     @Override
+    public void deletePhonePolyline() {
+        if (aPhonePolyline != null) {
+            aPhonePolyline.remove();
+            aPhonePolyline = null;
+        }
+    }
+
+    @Override
     public void deleteHomeMarker() {
         if (homeMarker!=null){
             homeMarker.remove();

@@ -314,6 +314,9 @@ public abstract class BaseMap {
      */
     public abstract void setShowHomeLine(boolean visible);
 
+    /**
+     * 是否显示手机点到当前飞机位置的连线
+     */
     public abstract void setShowPhoneLine(boolean visible);
 
     /**
@@ -351,6 +354,11 @@ public abstract class BaseMap {
      * 删除HOME到当前飞机点的连线
      */
     public abstract void deleteHomePolyline();
+
+    /**
+     * 删除手机到当前飞机点的连线
+     */
+    public abstract void deletePhonePolyline();
 
     /**
      * 删除HOME点
