@@ -62,6 +62,8 @@ public class GaodeMapLayout extends BaseMap {
     private Marker homeMarker;
     private List<Polygon> aNoflyzonePolygons = new ArrayList<>();   //危险-多边形
     private List<Circle> aNoflyzonePoints = new ArrayList<>();   //危险-点
+
+    private List<Polyline> aNoflyzoneLines = new ArrayList<>();   //危险-线
     private boolean isCheckInNoFlyZone = true;  // 是否检查在禁飞区中
 
     public GaodeMapLayout(Context context, Location location) {
@@ -292,14 +294,14 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setHomePoint(double longitude, double latitude, int homeRes) {
-        this.mHomeLon=longitude;
-        this.mHomeLat=latitude;
-        if (homeRes!=0){
+        this.mHomeLon = longitude;
+        this.mHomeLat = latitude;
+        if (homeRes != 0) {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             MarkerOptions startMarkerOptions = new MarkerOptions();
             startMarkerOptions.position(new LatLng(gcj02Line[1], gcj02Line[0]));
             startMarkerOptions.icon(BitmapDescriptorFactory.fromResource(homeRes));
-            if (homeMarker!=null){
+            if (homeMarker != null) {
                 homeMarker.remove();
             }
             homeMarker = aMap.addMarker(startMarkerOptions);
@@ -494,22 +496,22 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void deleteHomeMarker() {
-        if (homeMarker!=null){
+        if (homeMarker != null) {
             homeMarker.remove();
         }
     }
 
     @Override
     public void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end) {
-        if (onMoveTrackListener!=null){
+        if (onMoveTrackListener != null) {
             onMoveTrackListener.onDrawState(true);
         }
         PolylineOptions options = new PolylineOptions().setCustomTexture(BitmapDescriptorFactory.fromResource(texture)).color(color).width(8);
         for (int i = 0; i < lngLats.size(); i++) {
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
-            if (onMoveTrackListener!=null){
-                onMoveTrackListener.onDrawPosition(i,lngLats.get(i).getLongitude(),lngLats.get(i).getLatitude());
+            if (onMoveTrackListener != null) {
+                onMoveTrackListener.onDrawPosition(i, lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
             }
         }
 
@@ -530,7 +532,7 @@ public class GaodeMapLayout extends BaseMap {
             endMarkerOptions.icon(BitmapDescriptorFactory.fromResource(end));
             endMarker = aMap.addMarker(endMarkerOptions);
         }
-        if (onMoveTrackListener!=null){
+        if (onMoveTrackListener != null) {
             onMoveTrackListener.onDrawState(false);
         }
     }
@@ -614,8 +616,8 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void changeMaxDistance(int distance) {
-        if (mCircle!=null){
-            mMaxDistance=distance;
+        if (mCircle != null) {
+            mMaxDistance = distance;
             mCircle.setRadius(distance);
         }
     }
@@ -707,7 +709,7 @@ public class GaodeMapLayout extends BaseMap {
             options.add(latLng);
         }
         Polyline polyline = aMap.addPolyline(options);
-//            aNoflyzonePolygons.add(polygon);
+        aNoflyzoneLines.add(polyline);
     }
 
     /**
@@ -724,6 +726,11 @@ public class GaodeMapLayout extends BaseMap {
             dangerPoint.remove();
         }
         aNoflyzonePoints.clear();
+
+        for (Polyline aDangerLine: aNoflyzoneLines) {
+            aDangerLine.remove();
+        }
+        aNoflyzoneLines.clear();
     }
 
 
@@ -751,17 +758,13 @@ public class GaodeMapLayout extends BaseMap {
             // 检查是否在多边形内
             for (Polygon dangerPolygon : aNoflyzonePolygons) {
                 if (dangerPolygon.contains(latLng)) {
-//                    LogUtils.i("飞机正在禁飞区的多边形里面");
-//                    LogRecordUtils.addLog("飞机正在禁飞区的多边形里面");
                     isInNoFlyZone = true;
                 }
             }
 
             // 检查是否在圆形内
-            for (Circle  dangerPoint: aNoflyzonePoints) {
+            for (Circle dangerPoint : aNoflyzonePoints) {
                 if (dangerPoint.contains(latLng)) {
-//                    LogUtils.i("飞机正在禁飞区的圆形里面");
-//                    LogRecordUtils.addLog("飞机正在禁飞区的圆形里面");
                     isInNoFlyZone = true;
                 }
             }

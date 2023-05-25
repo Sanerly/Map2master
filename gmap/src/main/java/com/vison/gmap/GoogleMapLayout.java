@@ -33,6 +33,7 @@ import com.vison.base_map.LocationUtils;
 import com.vison.base_map.MapUiSettings;
 import com.vison.base_map.bean.FeaturesBean;
 import com.vison.base_map.bean.GeometryBean;
+import com.vison.base_map.bean.PropertiesBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     private Marker homeMarker;
     private List<Polygon> gNoflyzonePolygons = new ArrayList<>();   //危险-多边形
     private List<Circle> gNoflyzonePoints = new ArrayList<>();   //危险-点
+
+    private List<Polyline> gNoflyzoneLines = new ArrayList<>();   //危险-线
     private boolean isCheckInNoFlyZone = true;  // 是否检查在禁飞区中
 
     public GoogleMapLayout(Context context, Location location) {
@@ -761,7 +764,18 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void addDangerLine(FeaturesBean featuresBean) {
-
+        PropertiesBean propertiesBean = featuresBean.getProperties();
+        PolylineOptions options = new PolylineOptions()
+                .width(propertiesBean.getStrokeWidth() * 8)
+                .color(Color.parseColor(propertiesBean.getStrokeColor()));
+        for (LngLat lngLat : featuresBean.getGeometry().getMultiple()) {
+            // 坐标转换
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
+            LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+            options.add(latLng);
+        }
+        Polyline polyline = gMap.addPolyline(options);
+        gNoflyzoneLines.add(polyline);
     }
 
     /**
@@ -778,6 +792,11 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             gDangerPoint.remove();
         }
         gNoflyzonePoints.clear();
+
+        for (Polyline gDangerLine: gNoflyzoneLines) {
+            gDangerLine.remove();
+        }
+        gNoflyzoneLines.clear();
     }
 
     /**
@@ -802,8 +821,6 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         // 检查是否在多边形内
         for (Polygon gNoflyzonePolygon : gNoflyzonePolygons) {
             if (PolyUtil.containsLocation(new LatLng(latitude, longitude), gNoflyzonePolygon.getPoints(), false)) {
-//                LogUtils.i("飞机正在禁飞区的多边形里面");
-//                LogRecordUtils.addLog("飞机正在禁飞区的多边形里面");
                 isInNoFlyZone = true;
             }
         }
@@ -812,8 +829,6 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         for (Circle circle : gNoflyzonePoints) {
             LatLng latLng = circle.getCenter();
             if (LocationUtils.getDistance(longitude, latitude, latLng.longitude, latLng.latitude) <= circle.getRadius()) {
-//                LogUtils.i("飞机正在禁飞区的圆形里面");
-//                LogRecordUtils.addLog("飞机正在禁飞区的圆形里面");
                 isInNoFlyZone = true;
             }
         }
