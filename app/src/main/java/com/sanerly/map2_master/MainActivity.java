@@ -121,9 +121,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 //                updateLocation(location);
 
-                mapView.getBaseMap().deleteHomePolyline();
-//                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610308195213353, R.mipmap.ic_map_home);
-                mapView.getBaseMap().setDroneLocation(113.841444,22.59595, 0);
+//                mapView.getBaseMap().deleteHomePolyline();
+                mapView.getBaseMap().setHomePoint(113.84213980235995, 22.610308195213353, R.mipmap.ic_map_home);
+//                mapView.getBaseMap().setDroneLocation(113.841444,22.59595, 0);
+//                mapView.getBaseMap().setShowPhoneLine(true);
             }
         });
 
@@ -152,7 +153,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void onClick(View v) {
                 isShowHomeLine=!isShowHomeLine;
-                mapView.getBaseMap().setShowHomeLine(isShowHomeLine);
+
+//                mapView.getBaseMap().setShowHomeLine(isShowHomeLine);
                 mapView.getBaseMap().setShowPhoneLine(isShowHomeLine);
             }
         });

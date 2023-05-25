@@ -239,16 +239,17 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (mHomeLon != 0 && mHomeLat != 0) {
+        if (mHomeLon != 0 && mHomeLat != 0 ) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
             options.add(aDroneMarker.getPosition());
             if (aHomePolyline == null) {
                 aHomePolyline = aMap.addPolyline(options);
-                aHomePolyline.setVisible(false);
+                aHomePolyline.setVisible(isShowHomeLine);
             } else {
                 aHomePolyline.setOptions(options);
+                aHomePolyline.setVisible(isShowHomeLine);
             }
         }
 
@@ -259,9 +260,10 @@ public class GaodeMapLayout extends BaseMap {
             options.add(aDroneMarker.getPosition());
             if (aPhonePolyline == null) {
                 aPhonePolyline = aMap.addPolyline(options);
-                aPhonePolyline.setVisible(false);
+                aPhonePolyline.setVisible(isShowPhoneLine);
             } else {
                 aPhonePolyline.setOptions(options);
+                aPhonePolyline.setVisible(isShowPhoneLine);
             }
         }
 
@@ -310,6 +312,7 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setShowHomeLine(boolean visible) {
+        super.setShowHomeLine(visible);
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }
@@ -317,10 +320,10 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setShowPhoneLine(boolean visible) {
+        super.setShowPhoneLine(visible);
         if (aPhonePolyline != null) {
             aPhonePolyline.setVisible(visible);
         }
-
     }
 
     @Override

@@ -214,9 +214,10 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             options.add(aDroneMarker.getPosition());
             if (aHomePolyline == null) {
                 aHomePolyline = gMap.addPolyline(options);
-                aHomePolyline.setVisible(false);
+                aHomePolyline.setVisible(isShowHomeLine);
             } else {
                 aHomePolyline.setPoints(options.getPoints());
+                aHomePolyline.setVisible(isShowHomeLine);
             }
         }
 
@@ -227,9 +228,10 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             options.add(aDroneMarker.getPosition());
             if (aPhonePolyline == null) {
                 aPhonePolyline = gMap.addPolyline(options);
-                aPhonePolyline.setVisible(false);
+                aPhonePolyline.setVisible(isShowPhoneLine);
             } else {
                 aPhonePolyline.setPoints(options.getPoints());
+                aPhonePolyline.setVisible(isShowPhoneLine);
             }
         }
 
@@ -286,6 +288,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setShowHomeLine(boolean visible) {
+        super.setShowHomeLine(visible);
         if (aHomePolyline != null) {
             aHomePolyline.setVisible(visible);
         }
@@ -293,6 +296,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void setShowPhoneLine(boolean visible) {
+        super.setShowPhoneLine(visible);
         if (aPhonePolyline != null) {
             aPhonePolyline.setVisible(visible);
         }

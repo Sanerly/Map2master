@@ -37,6 +37,8 @@ public abstract class BaseMap {
     protected boolean isOnlyLook = false;
     protected boolean isShowInfoWindow = false;
     protected boolean isLocationConvert = false;
+    protected boolean isShowHomeLine = false;
+    protected boolean isShowPhoneLine = false;
     protected OnMapClickListener onMapClickListener;
     protected OnMoveTrackListener onMoveTrackListener;
     private CompassUtils mCompassUtils;
@@ -166,41 +168,34 @@ public abstract class BaseMap {
     }
 
     /**
-     * 绘制飞机的移动轨迹
-     *
-     * @param lngLats 点
-     * @param color   线条颜色
+     * 绘制区域的颜色
+     * @param fillColor
+     * @retur
      */
-    public void drawMoveTrack(List<LngLat> lngLats, int color) {
-        this.drawMoveTrack(lngLats, 0, color);
-    }
-
     public BaseMap setFillColor(int fillColor) {
         this.mFillColor = fillColor;
         return this;
     }
 
+    /**
+     * 绘制区域的边框颜色
+     * @param strokeColor
+     * @return
+     */
     public BaseMap setStrokeColor(int strokeColor) {
         this.mStrokeColor = strokeColor;
         return this;
     }
 
+    /**
+     * 绘制区域的边框宽
+     * @param strokeWidth
+     * @return
+     */
     public BaseMap setStrokeWidth(int strokeWidth) {
         this.mStrokeWidth = strokeWidth;
         return this;
     }
-
-    /**
-     * 绘制飞机的移动轨迹
-     *
-     * @param lngLats 点
-     * @param texture 高德地图线条纹理(谷歌地图不适用)
-     * @param color   线条颜色
-     */
-    public void drawMoveTrack(List<LngLat> lngLats, int texture, int color) {
-        this.drawMoveTrack(lngLats, texture, color, 0, 0);
-    }
-
 
     /**
      * 设置点击范围无效点的提示
@@ -258,10 +253,44 @@ public abstract class BaseMap {
     }
 
     /**
+     * 绘制飞机的移动轨迹
+     *
+     * @param lngLats 点
+     * @param color   线条颜色
+     */
+    public void drawMoveTrack(List<LngLat> lngLats, int color) {
+        this.drawMoveTrack(lngLats, 0, color);
+    }
+
+    /**
+     * 绘制飞机的移动轨迹
+     *
+     * @param lngLats 点
+     * @param texture 高德地图线条纹理(谷歌地图不适用)
+     * @param color   线条颜色
+     */
+    public void drawMoveTrack(List<LngLat> lngLats, int texture, int color) {
+        this.drawMoveTrack(lngLats, texture, color, 0, 0);
+    }
+
+    /**
+     * 是否显示飞机Home点到当前飞机位置的连线
+     */
+    public void setShowHomeLine(boolean visible){
+        this.isShowHomeLine=visible;
+    }
+
+    /**
+     * 是否显示手机点到当前飞机位置的连线
+     */
+    public void setShowPhoneLine(boolean visible){
+        this.isShowPhoneLine=visible;
+    }
+
+    /**
      * 地图准备完成
      */
     public boolean getMapReady() {
-
         return isMapReady;
     }
 
@@ -308,16 +337,6 @@ public abstract class BaseMap {
      * 设置飞机Home点坐标
      */
     public abstract void setHomePoint(double longitude, double latitude, int homeRes);
-
-    /**
-     * 是否显示飞机Home点到当前飞机位置的连线
-     */
-    public abstract void setShowHomeLine(boolean visible);
-
-    /**
-     * 是否显示手机点到当前飞机位置的连线
-     */
-    public abstract void setShowPhoneLine(boolean visible);
 
     /**
      * 根据经纬度，移动到当前位置
