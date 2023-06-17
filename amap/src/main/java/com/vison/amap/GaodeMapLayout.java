@@ -279,16 +279,12 @@ public class GaodeMapLayout extends BaseMap {
 //                    return true;
 //                }
 //            };
+            aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
             float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
             aDroneMarker.setTitle("Last flight position of uav");
             String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
             aDroneMarker.setSnippet(snippet);
-            if (aDroneMarker.isInfoWindowShown()) {
-                aDroneMarker.hideInfoWindow();
-            } else {
-                aDroneMarker.showInfoWindow();
-            }
-            aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
+            aDroneMarker.showInfoWindow();
 //            aMap.setOnMarkerClickListener(onMarkerClickListener);
         }
 

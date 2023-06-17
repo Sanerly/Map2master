@@ -248,17 +248,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 //                }
 //            };
 
+            gMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
             double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude,
                     aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
             aDroneMarker.setTitle("Last flight position of uav");
             String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
             aDroneMarker.setSnippet(snippet);
-            if (aDroneMarker.isInfoWindowShown()) {
-                aDroneMarker.hideInfoWindow();
-            } else {
-                aDroneMarker.showInfoWindow();
-            }
-            gMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
+            aDroneMarker.showInfoWindow();
 //            gMap.setOnMarkerClickListener(onMarkerClickListener);
         }
 
