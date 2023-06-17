@@ -236,29 +236,30 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         }
 
         if (isShowInfoWindow) {
-            GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
-                // marker 对象被点击时回调的接口
-                // 返回 true 则表示接口已响应事件，否则返回false
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.getId().equals(aDroneMarker.getId())) {
+//            GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
+//                // marker 对象被点击时回调的接口
+//                // 返回 true 则表示接口已响应事件，否则返回false
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    if (marker.getId().equals(aDroneMarker.getId())) {
+//
+//                    }
+//                    return true;
+//                }
+//            };
 
-                        double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude,
-                                aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
-                        aDroneMarker.setTitle("Last flight position of uav");
-                        String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
-                        aDroneMarker.setSnippet(snippet);
-                        if (aDroneMarker.isInfoWindowShown()) {
-                            aDroneMarker.hideInfoWindow();
-                        } else {
-                            aDroneMarker.showInfoWindow();
-                        }
-                    }
-                    return true;
-                }
-            };
+            double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude,
+                    aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
+            aDroneMarker.setTitle("Last flight position of uav");
+            String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+            aDroneMarker.setSnippet(snippet);
+            if (aDroneMarker.isInfoWindowShown()) {
+                aDroneMarker.hideInfoWindow();
+            } else {
+                aDroneMarker.showInfoWindow();
+            }
             gMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
-            gMap.setOnMarkerClickListener(onMarkerClickListener);
+//            gMap.setOnMarkerClickListener(onMarkerClickListener);
         }
 
     }

@@ -268,27 +268,28 @@ public class GaodeMapLayout extends BaseMap {
         }
 
         if (isShowInfoWindow) {
-            AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
-                // marker 对象被点击时回调的接口
-                // 返回 true 则表示接口已响应事件，否则返回false
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.getId().equals(aDroneMarker.getId())) {
-                        float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
-                        aDroneMarker.setTitle("Last flight position of uav");
-                        String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
-                        aDroneMarker.setSnippet(snippet);
-                        if (aDroneMarker.isInfoWindowShown()) {
-                            aDroneMarker.hideInfoWindow();
-                        } else {
-                            aDroneMarker.showInfoWindow();
-                        }
-                    }
-                    return true;
-                }
-            };
+//            AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
+//                // marker 对象被点击时回调的接口
+//                // 返回 true 则表示接口已响应事件，否则返回false
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    if (marker.getId().equals(aDroneMarker.getId())) {
+//
+//                    }
+//                    return true;
+//                }
+//            };
+            float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
+            aDroneMarker.setTitle("Last flight position of uav");
+            String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+            aDroneMarker.setSnippet(snippet);
+            if (aDroneMarker.isInfoWindowShown()) {
+                aDroneMarker.hideInfoWindow();
+            } else {
+                aDroneMarker.showInfoWindow();
+            }
             aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
-            aMap.setOnMarkerClickListener(onMarkerClickListener);
+//            aMap.setOnMarkerClickListener(onMarkerClickListener);
         }
 
 
