@@ -281,8 +281,8 @@ public class GaodeMapLayout extends BaseMap {
 //            };
             aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
             float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
-            aDroneMarker.setTitle("Last flight position of uav");
-            String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+            aDroneMarker.setTitle("无人机最后飞行位置");
+            String snippet = "经度:" + aDroneMarker.getPosition().longitude + "\n纬度:" + aDroneMarker.getPosition().latitude + "\n距离当前位置有 " + distance + "m";
             aDroneMarker.setSnippet(snippet);
             aDroneMarker.showInfoWindow();
 //            aMap.setOnMarkerClickListener(onMarkerClickListener);
