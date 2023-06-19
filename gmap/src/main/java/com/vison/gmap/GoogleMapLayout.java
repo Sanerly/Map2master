@@ -235,7 +235,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             }
         }
 
-        if (isShowInfoWindow) {
+        if (isShowInfoWindow && aMyMarker!=null) {
 //            GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
 //                // marker 对象被点击时回调的接口
 //                // 返回 true 则表示接口已响应事件，否则返回false

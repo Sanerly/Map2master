@@ -267,7 +267,7 @@ public class GaodeMapLayout extends BaseMap {
             }
         }
 
-        if (isShowInfoWindow) {
+        if (isShowInfoWindow && aMyMarker!=null) {
 //            AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
 //                // marker 对象被点击时回调的接口
 //                // 返回 true 则表示接口已响应事件，否则返回false
