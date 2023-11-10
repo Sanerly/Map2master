@@ -24,7 +24,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //google地图
-    implementation('com.google.android.gms:play-services-maps:16.0.0') {
+    implementation('com.google.android.gms:play-services-maps:18.1.0') {
         exclude group: 'com.android.support'
     }
     implementation 'com.google.maps.android:android-maps-utils:0.4.4'
