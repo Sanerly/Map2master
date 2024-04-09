@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMaxDistance(50)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
-                .setZoomLevel(19)
+                .setZoomLevel(22)
                 .setMinZoomLevel(3)
                 .setFillColor(Color.parseColor("#504086FF"))
                 .setStrokeColor(Color.parseColor("#093BB9"))
@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                mapView.getBaseMap().setShowPhoneLine(true);
 
 //                mapView.getBaseMap().setHomePoint(113.85213980235995, 22.610208195213353, R.mipmap.ic_map_home);
+                mapView.getBaseMap().setDroneLocation(113.84213980235995, 22.610208195213353, 0);
+                mapView.getBaseMap().moveDroneLocation();
 
             }
         });
@@ -147,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                //移动到当前位置
 //                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353,45);
 
-                mapView.getBaseMap().setDroneLocation(116.75096, 23.490221, 0);
+//                mapView.getBaseMap().setDroneLocation(116.75096, 23.490221, 0);
+                mapView.getBaseMap().moveDroneLocation();
 
 //                mapView.getBaseMap().setResetMaxDistance(800);
             }

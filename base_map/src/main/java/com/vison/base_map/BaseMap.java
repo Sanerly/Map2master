@@ -30,7 +30,7 @@ public abstract class BaseMap {
     protected int mFillColor = Color.argb(50, 2, 146, 255);
     protected int mStrokeColor = Color.argb(50, 1, 1, 1);
     protected int mStrokeWidth = 3;
-    protected int mMinZoomLevel = 12;
+    protected int mMinZoomLevel = 3;
     protected int mZoomLevel = 22;
     protected boolean isHasArea = true;
     protected boolean isMapReady = false;        //地图准备就绪

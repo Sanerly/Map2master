@@ -12,6 +12,7 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -73,6 +74,11 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void init(FrameLayout layout) {
+
+        // 合规处理
+        MapsInitializer.updatePrivacyAgree(getContext(),true);
+        MapsInitializer.updatePrivacyShow(getContext(),true,true);
+
         aMapView = new TextureMapView(getContext());
         layout.addView(aMapView);
 
@@ -95,8 +101,6 @@ public class GaodeMapLayout extends BaseMap {
 
         // 设置最小缩放级别为2km
         aMap.setMinZoomLevel(mMinZoomLevel);
-        // 设置缩放级别
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(mZoomLevel));
 
         aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
@@ -118,7 +122,7 @@ public class GaodeMapLayout extends BaseMap {
             double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(mLocation.getLongitude(), mLocation.getLatitude());
             LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 22, cameraPosition.tilt, cameraPosition.bearing));
+            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
         }
 
@@ -139,7 +143,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aMyMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
+                    mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -209,7 +213,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aDroneMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
+                    mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -332,7 +336,7 @@ public class GaodeMapLayout extends BaseMap {
             CameraPosition cameraPosition = aMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, tilt, cameraPosition.bearing));
+                    mZoomLevel, tilt, cameraPosition.bearing));
             aMap.moveCamera(mCameraUpdate);
             return true;
         } else {

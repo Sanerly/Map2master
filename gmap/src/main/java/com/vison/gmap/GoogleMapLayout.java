@@ -87,7 +87,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aMyMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
+                    mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -167,7 +167,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(aDroneMarker.getPosition(),
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
+                    mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -313,7 +313,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             CameraPosition cameraPosition = gMap.getCameraPosition();
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
             CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng,
-                    cameraPosition.zoom > 19 ? cameraPosition.zoom : mZoomLevel, tilt, cameraPosition.bearing));
+                    mZoomLevel, tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
             return true;
         } else {
@@ -711,7 +711,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
             }
             //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 19, cameraPosition.tilt, cameraPosition.bearing));
+            CameraUpdate mCameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, mZoomLevel, cameraPosition.tilt, cameraPosition.bearing));
             gMap.moveCamera(mCameraUpdate);
 
         }
