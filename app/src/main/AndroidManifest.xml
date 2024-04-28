@@ -66,9 +66,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="67c9efdf68a2f2d24242862c853d6d52"/>
+<!--        <meta-data-->
+<!--            android:name="com.amap.api.v2.apikey"-->
+<!--            android:value="67c9efdf68a2f2d24242862c853d6d52"/>-->
 
         <!-- google地图key -->
         <meta-data

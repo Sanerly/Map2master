@@ -75,10 +75,6 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public void init(FrameLayout layout) {
 
-        // 合规处理
-        MapsInitializer.updatePrivacyAgree(getContext(),true);
-        MapsInitializer.updatePrivacyShow(getContext(),true,true);
-
         aMapView = new TextureMapView(getContext());
         layout.addView(aMapView);
 
@@ -153,7 +149,7 @@ public class GaodeMapLayout extends BaseMap {
 
     @Override
     public void setMyLocation(Location location) {
-        if (!isMapReady || mLocation == null) {
+        if (!isMapReady || location == null) {
             return;
         }
         mLocation = location;
