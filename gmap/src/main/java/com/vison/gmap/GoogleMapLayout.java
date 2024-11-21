@@ -37,8 +37,6 @@ import com.vison.base_map.bean.PropertiesBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * @Author: Sanerly
@@ -62,11 +60,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     protected double mHomeLon = 0;
     protected double mHomeLat = 0;
     private Marker homeMarker;
-    private List<Polygon> gNoflyzonePolygons = new ArrayList<>();   //危险-多边形
-    private List<Circle> gNoflyzonePoints = new ArrayList<>();   //危险-点
-
-    private List<Polyline> gNoflyzoneLines = new ArrayList<>();   //危险-线
-    private boolean isCheckInNoFlyZone = true;  // 是否检查在禁飞区中
+    private final List<Polygon> mNoFlyZonePolygons = new ArrayList<>();   //危险-多边形
+    private final List<Circle> mNoFlyZonePoints = new ArrayList<>();   //危险-点
+    private final List<Polyline> mNoFlyZoneLines = new ArrayList<>();   //危险-线
 
     public GoogleMapLayout(Context context, Location location) {
         super(context, location);
@@ -152,8 +148,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                         .center(latLng)
                         .radius(distance)
                         .fillColor(mFillColor).
-                                strokeColor(mStrokeColor).
-                                strokeWidth(mStrokeWidth));
+                        strokeColor(mStrokeColor).
+                        strokeWidth(mStrokeWidth));
             } else {
                 mCircle.setCenter(latLng);
                 mCircle.setRadius(distance);
@@ -235,7 +231,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             }
         }
 
-        if (isShowInfoWindow && aMyMarker!=null) {
+        if (isShowInfoWindow && aMyMarker != null) {
 //            GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
 //                // marker 对象被点击时回调的接口
 //                // 返回 true 则表示接口已响应事件，否则返回false
@@ -493,7 +489,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 
     @Override
     public void drawMoveTrack(List<LngLat> lngLats, int texture, int color, int start, int end) {
-        if (onMoveTrackListener!=null){
+        if (onMoveTrackListener != null) {
             onMoveTrackListener.onDrawState(true);
         }
         PolylineOptions options = new PolylineOptions().color(color).width(8);
@@ -507,8 +503,8 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             }
 
             options.add(latLng);
-            if (onMoveTrackListener!=null){
-                onMoveTrackListener.onDrawPosition(i,lngLats.get(i).getLongitude(),lngLats.get(i).getLatitude());
+            if (onMoveTrackListener != null) {
+                onMoveTrackListener.onDrawPosition(i, lngLats.get(i).getLongitude(), lngLats.get(i).getLatitude());
             }
         }
         aDroneTrackline = gMap.addPolyline(options);
@@ -524,7 +520,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             endMarkerOptions.icon(BitmapDescriptorFactory.fromResource(end));
             endMarker = gMap.addMarker(endMarkerOptions);
         }
-        if (onMoveTrackListener!=null){
+        if (onMoveTrackListener != null) {
             onMoveTrackListener.onDrawState(false);
         }
     }
@@ -730,6 +726,9 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     @Override
     public void addDangerPolygon(FeaturesBean featuresBean) {
         GeometryBean geometryBean = featuresBean.getGeometry();
+        if (geometryBean == null) {
+            return;
+        }
         if (geometryBean.getMMultiple() == null) {
             return;
         }
@@ -743,7 +742,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 options.add(new LatLng(lngLat.getLatitude(), lngLat.getLongitude()));
             }
             Polygon polygon = gMap.addPolygon(options);
-            gNoflyzonePolygons.add(polygon);
+            mNoFlyZonePolygons.add(polygon);
         }
     }
 
@@ -754,13 +753,16 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     @Override
     public void addDangerPoint(FeaturesBean featuresBean) {
         LngLat lngLat = featuresBean.getGeometry().getSingle();
+        if (lngLat == null) {
+            return;
+        }
         Circle circle = gMap.addCircle(new CircleOptions().
                 center(new LatLng(lngLat.getLatitude(), lngLat.getLongitude())).
                 radius(featuresBean.getProperties().getRadius()).
                 fillColor(Color.parseColor("#60ff0000")).
                 strokeColor(Color.parseColor("#ff0000")).
                 strokeWidth(6));
-        gNoflyzonePoints.add(circle);
+        mNoFlyZonePoints.add(circle);
     }
 
     @Override
@@ -776,7 +778,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             options.add(latLng);
         }
         Polyline polyline = gMap.addPolyline(options);
-        gNoflyzoneLines.add(polyline);
+        mNoFlyZoneLines.add(polyline);
     }
 
     /**
@@ -784,20 +786,20 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
      */
     @Override
     public void cleanNoFlyZone() {
-        for (Polygon gDangerPolygon : gNoflyzonePolygons) {
+        for (Polygon gDangerPolygon : mNoFlyZonePolygons) {
             gDangerPolygon.remove();
         }
-        gNoflyzonePolygons.clear();
+        mNoFlyZonePolygons.clear();
 
-        for (Circle gDangerPoint : gNoflyzonePoints) {
+        for (Circle gDangerPoint : mNoFlyZonePoints) {
             gDangerPoint.remove();
         }
-        gNoflyzonePoints.clear();
+        mNoFlyZonePoints.clear();
 
-        for (Polyline gDangerLine: gNoflyzoneLines) {
+        for (Polyline gDangerLine : mNoFlyZoneLines) {
             gDangerLine.remove();
         }
-        gNoflyzoneLines.clear();
+        mNoFlyZoneLines.clear();
     }
 
     /**
@@ -806,28 +808,15 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     @Override
     public boolean checkInNoFlyZone(double longitude, double latitude) {
         boolean isInNoFlyZone = false;
-        if (isCheckInNoFlyZone) {
-            isCheckInNoFlyZone = false;
-
-            // 10秒钟才允许检查一次
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isCheckInNoFlyZone = true;
-                }
-            }, 10 * 1000);
-
-        }
-
         // 检查是否在多边形内
-        for (Polygon gNoflyzonePolygon : gNoflyzonePolygons) {
+        for (Polygon gNoflyzonePolygon : mNoFlyZonePolygons) {
             if (PolyUtil.containsLocation(new LatLng(latitude, longitude), gNoflyzonePolygon.getPoints(), false)) {
                 isInNoFlyZone = true;
             }
         }
 
         // 检查是否在圆形内
-        for (Circle circle : gNoflyzonePoints) {
+        for (Circle circle : mNoFlyZonePoints) {
             LatLng latLng = circle.getCenter();
             if (LocationUtils.getDistance(longitude, latitude, latLng.longitude, latLng.latitude) <= circle.getRadius()) {
                 isInNoFlyZone = true;

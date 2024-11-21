@@ -12,7 +12,6 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
-import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -36,8 +35,6 @@ import com.vison.base_map.bean.PropertiesBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * @Author: Sanerly
@@ -61,11 +58,9 @@ public class GaodeMapLayout extends BaseMap {
     protected double mHomeLon = 0;
     protected double mHomeLat = 0;
     private Marker homeMarker;
-    private List<Polygon> aNoflyzonePolygons = new ArrayList<>();   //危险-多边形
-    private List<Circle> aNoflyzonePoints = new ArrayList<>();   //危险-点
-
-    private List<Polyline> aNoflyzoneLines = new ArrayList<>();   //危险-线
-    private boolean isCheckInNoFlyZone = true;  // 是否检查在禁飞区中
+    private final List<Polygon> mNoFlyZonePolygons = new ArrayList<>();   //危险-多边形
+    private final List<Circle> mNoFlyZonePoints = new ArrayList<>();   //危险-点
+    private final List<Polyline> mNoFlyZoneLines = new ArrayList<>();   //危险-线
 
     public GaodeMapLayout(Context context, Location location) {
         super(context, location);
@@ -651,6 +646,9 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public void addDangerPolygon(FeaturesBean featuresBean) {
         GeometryBean geometryBean = featuresBean.getGeometry();
+        if (geometryBean == null) {
+            return;
+        }
         if (geometryBean.getMMultiple() == null) {
             return;
         }
@@ -667,7 +665,7 @@ public class GaodeMapLayout extends BaseMap {
                 options.add(latLng);
             }
             Polygon polygon = aMap.addPolygon(options);
-            aNoflyzonePolygons.add(polygon);
+            mNoFlyZonePolygons.add(polygon);
         }
     }
 
@@ -679,6 +677,9 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public void addDangerPoint(FeaturesBean featuresBean) {
         LngLat lngLat = featuresBean.getGeometry().getSingle();
+        if (lngLat==null){
+            return;
+        }
         // 坐标转换
         double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(lngLat.getLongitude(), lngLat.getLatitude());
         LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
@@ -689,7 +690,7 @@ public class GaodeMapLayout extends BaseMap {
                 fillColor(Color.parseColor("#60ff0000")).
                 strokeColor(Color.parseColor("#ff0000")).
                 strokeWidth(6));
-        aNoflyzonePoints.add(circle);
+        mNoFlyZonePoints.add(circle);
     }
 
     /**
@@ -709,7 +710,7 @@ public class GaodeMapLayout extends BaseMap {
             options.add(latLng);
         }
         Polyline polyline = aMap.addPolyline(options);
-        aNoflyzoneLines.add(polyline);
+        mNoFlyZoneLines.add(polyline);
     }
 
     /**
@@ -717,20 +718,20 @@ public class GaodeMapLayout extends BaseMap {
      */
     @Override
     public void cleanNoFlyZone() {
-        for (Polygon dangerPolygon : aNoflyzonePolygons) {
+        for (Polygon dangerPolygon : mNoFlyZonePolygons) {
             dangerPolygon.remove();
         }
-        aNoflyzonePolygons.clear();
+        mNoFlyZonePolygons.clear();
 
-        for (Circle dangerPoint : aNoflyzonePoints) {
+        for (Circle dangerPoint : mNoFlyZonePoints) {
             dangerPoint.remove();
         }
-        aNoflyzonePoints.clear();
+        mNoFlyZonePoints.clear();
 
-        for (Polyline aDangerLine: aNoflyzoneLines) {
+        for (Polyline aDangerLine: mNoFlyZoneLines) {
             aDangerLine.remove();
         }
-        aNoflyzoneLines.clear();
+        mNoFlyZoneLines.clear();
     }
 
 
@@ -740,33 +741,21 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public boolean checkInNoFlyZone(double longitude, double latitude) {
         boolean isInNoFlyZone = false;
-        if (isCheckInNoFlyZone) {
-            isCheckInNoFlyZone = false;
+        // 坐标转换
+        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
 
-            // 10秒钟才允许检查一次
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isCheckInNoFlyZone = true;
-                }
-            }, 10 * 1000);
-
-            // 坐标转换
-            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
-            LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
-
-            // 检查是否在多边形内
-            for (Polygon dangerPolygon : aNoflyzonePolygons) {
-                if (dangerPolygon.contains(latLng)) {
-                    isInNoFlyZone = true;
-                }
+        // 检查是否在多边形内
+        for (Polygon dangerPolygon : mNoFlyZonePolygons) {
+            if (dangerPolygon.contains(latLng)) {
+                isInNoFlyZone = true;
             }
+        }
 
-            // 检查是否在圆形内
-            for (Circle dangerPoint : aNoflyzonePoints) {
-                if (dangerPoint.contains(latLng)) {
-                    isInNoFlyZone = true;
-                }
+        // 检查是否在圆形内
+        for (Circle dangerPoint : mNoFlyZonePoints) {
+            if (dangerPoint.contains(latLng)) {
+                isInNoFlyZone = true;
             }
         }
         return isInNoFlyZone;
