@@ -3,8 +3,10 @@
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        maven { url= uri('https://www.jitpack.io') }
+        maven { url= uri('https://mirrors.huaweicloud.com/repository/maven/') }
+        maven { url = uri('https://zendesk.jfrog.io/zendesk/repo') }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
@@ -17,9 +19,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url "https://jitpack.io" }
         mavenCentral()
-        jcenter()
+        maven { url= uri('https://www.jitpack.io') }
+        maven { url= uri('https://mirrors.huaweicloud.com/repository/maven/') }
+        maven { url = uri('https://zendesk.jfrog.io/zendesk/repo') }
     }
 }
 
@@ -28,8 +31,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    VERSION_CODE = 94
-    VERSION_NAME = "1.9.4"
+    VERSION_CODE = 95
+    VERSION_NAME = "1.9.5"
     COMPILE_SDKVERSION=28
     MIN_SDKVERSION=19
     TARGET_SDKVERSION=28
