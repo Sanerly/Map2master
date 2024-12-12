@@ -169,6 +169,7 @@ public abstract class BaseMap {
 
     /**
      * 绘制区域的颜色
+     *
      * @param fillColor
      * @retur
      */
@@ -179,6 +180,7 @@ public abstract class BaseMap {
 
     /**
      * 绘制区域的边框颜色
+     *
      * @param strokeColor
      * @return
      */
@@ -189,6 +191,7 @@ public abstract class BaseMap {
 
     /**
      * 绘制区域的边框宽
+     *
      * @param strokeWidth
      * @return
      */
@@ -276,15 +279,15 @@ public abstract class BaseMap {
     /**
      * 是否显示飞机Home点到当前飞机位置的连线
      */
-    public void setShowHomeLine(boolean visible){
-        this.isShowHomeLine=visible;
+    public void setShowHomeLine(boolean visible) {
+        this.isShowHomeLine = visible;
     }
 
     /**
      * 是否显示手机点到当前飞机位置的连线
      */
-    public void setShowPhoneLine(boolean visible){
-        this.isShowPhoneLine=visible;
+    public void setShowPhoneLine(boolean visible) {
+        this.isShowPhoneLine = visible;
     }
 
     /**
@@ -319,6 +322,7 @@ public abstract class BaseMap {
 
     /**
      * 重置航点范围
+     *
      * @param distance
      */
     public abstract void setResetMaxDistance(int distance);
@@ -341,7 +345,7 @@ public abstract class BaseMap {
     /**
      * 根据经纬度，移动到当前位置
      */
-    public abstract boolean moveCurrentLocation(double longitude, double latitude,float tilt);
+    public abstract boolean moveCurrentLocation(double longitude, double latitude, float tilt);
 
     /**
      * 设置地图类型
@@ -449,11 +453,22 @@ public abstract class BaseMap {
      */
     public abstract void cleanNoFlyZone();
 
-
     /**
      * 检查是否在禁飞区内
      */
     public abstract boolean checkInNoFlyZone(double longitude, double latitude);
+
+    /**
+     * 绘制圆形区域
+     */
+    public abstract boolean drawCircle(double longitude, double latitude, int distance, int fillColor, int strokeColor, int strokeWidth);
+
+    /**
+     * 清除绘制的圆
+     */
+    public abstract boolean clearCircle();
+
+
     /**
      * 地图生命周期
      */

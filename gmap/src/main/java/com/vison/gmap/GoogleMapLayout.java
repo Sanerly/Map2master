@@ -55,6 +55,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
     protected Polyline aDroneTrackline;     //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
+    protected Circle mDrawCircle;
     private Marker startMarker;
     private Marker endMarker;
     protected double mHomeLon = 0;
@@ -824,5 +825,46 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
         }
 
         return isInNoFlyZone;
+    }
+
+    @Override
+    public boolean drawCircle(double longitude, double latitude, int distance, int fillColor, int strokeColor, int strokeWidth) {
+        if (gMap == null) {
+            return false;
+        }
+        if (!isMapReady) {
+            return false;
+        }
+        // 坐标转换
+        LatLng latLng;
+        if (isLocationConvert) {
+            double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+            latLng = new LatLng(gcj02[1], gcj02[0]);
+        } else {
+            latLng = new LatLng(longitude, latitude);
+        }
+        mDrawCircle = gMap.addCircle(new CircleOptions().
+                center(latLng).
+                radius(distance).
+                fillColor(fillColor).
+                strokeColor(strokeColor).
+                strokeWidth(strokeWidth));
+        return true;
+    }
+
+
+    @Override
+    public boolean clearCircle() {
+        if (gMap == null) {
+            return false;
+        }
+        if (!isMapReady) {
+            return false;
+        }
+        if (mDrawCircle == null) {
+            return false;
+        }
+        mDrawCircle.remove();
+        return true;
     }
 }

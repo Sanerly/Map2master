@@ -150,9 +150,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 //                mapView.getBaseMap().moveCurrentLocation(113.84213980235995, 22.610208195213353,45);
 
 //                mapView.getBaseMap().setDroneLocation(116.75096, 23.490221, 0);
-                mapView.getBaseMap().moveDroneLocation();
+//                mapView.getBaseMap().moveDroneLocation();
 
 //                mapView.getBaseMap().setResetMaxDistance(800);
+                 int mFillColor = Color.argb(128, 255, 0, 0);
+                 int mStrokeColor = Color.argb(255, 255, 0, 0);
+                mapView.getBaseMap().drawCircle(113.84213980235995, 22.610208195213353,30,mFillColor,mStrokeColor,5);
             }
         });
 
@@ -163,8 +166,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 //                mapView.getBaseMap().setShowHomeLine(isShowHomeLine);
 //                mapView.getBaseMap().setShowPhoneLine(isShowHomeLine);
-                mapView.getBaseMap().deleteHomeMarker();
-                mapView.getBaseMap().deleteHomePolyline();
+//                mapView.getBaseMap().deleteHomeMarker();
+//                mapView.getBaseMap().deleteHomePolyline();
+                mapView.getBaseMap().clearCircle();
             }
         });
 

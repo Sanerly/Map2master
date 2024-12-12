@@ -53,6 +53,7 @@ public class GaodeMapLayout extends BaseMap {
     protected Polyline aDroneTrackline;  //飞机轨迹路径
     protected List<Marker> aMarkerList = new ArrayList<>(); // 航点飞行标记
     protected Circle mCircle;
+    protected Circle mDrawCircle;
     private Marker startMarker;
     private Marker endMarker;
     protected double mHomeLon = 0;
@@ -234,7 +235,7 @@ public class GaodeMapLayout extends BaseMap {
         aDroneMarker.setRotateAngle(angle);
 
 
-        if (mHomeLon != 0 && mHomeLat != 0 ) {
+        if (mHomeLon != 0 && mHomeLat != 0) {
             PolylineOptions options = new PolylineOptions().color(Color.parseColor("#FFFF0000")).width(8);
             double[] gcj02Line = CoordinateTransformUtil.wgs84togcj02(mHomeLon, mHomeLat);
             options.add(new LatLng(gcj02Line[1], gcj02Line[0]));
@@ -262,7 +263,7 @@ public class GaodeMapLayout extends BaseMap {
             }
         }
 
-        if (isShowInfoWindow && aMyMarker!=null) {
+        if (isShowInfoWindow && aMyMarker != null) {
 //            AMap.OnMarkerClickListener onMarkerClickListener = new AMap.OnMarkerClickListener() {
 //                // marker 对象被点击时回调的接口
 //                // 返回 true 则表示接口已响应事件，否则返回false
@@ -677,7 +678,7 @@ public class GaodeMapLayout extends BaseMap {
     @Override
     public void addDangerPoint(FeaturesBean featuresBean) {
         LngLat lngLat = featuresBean.getGeometry().getSingle();
-        if (lngLat==null){
+        if (lngLat == null) {
             return;
         }
         // 坐标转换
@@ -728,7 +729,7 @@ public class GaodeMapLayout extends BaseMap {
         }
         mNoFlyZonePoints.clear();
 
-        for (Polyline aDangerLine: mNoFlyZoneLines) {
+        for (Polyline aDangerLine : mNoFlyZoneLines) {
             aDangerLine.remove();
         }
         mNoFlyZoneLines.clear();
@@ -759,5 +760,40 @@ public class GaodeMapLayout extends BaseMap {
             }
         }
         return isInNoFlyZone;
+    }
+
+    @Override
+    public boolean drawCircle(double longitude, double latitude, int distance, int fillColor, int strokeColor, int strokeWidth) {
+        if (aMap == null) {
+            return false;
+        }
+        if (!isMapReady) {
+            return false;
+        }
+
+        double[] gcj02 = CoordinateTransformUtil.wgs84togcj02(longitude, latitude);
+        LatLng latLng = new LatLng(gcj02[1], gcj02[0]);
+        mDrawCircle = aMap.addCircle(new CircleOptions().
+                center(latLng).
+                radius(distance).
+                fillColor(fillColor).
+                strokeColor(strokeColor).
+                strokeWidth(strokeWidth));
+        return true;
+    }
+
+    @Override
+    public boolean clearCircle() {
+        if (aMap == null) {
+            return false;
+        }
+        if (!isMapReady) {
+            return false;
+        }
+        if (mDrawCircle == null) {
+            return false;
+        }
+        mDrawCircle.remove();
+        return true;
     }
 }
