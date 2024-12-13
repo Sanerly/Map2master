@@ -759,6 +759,14 @@ public class GaodeMapLayout extends BaseMap {
                 isInNoFlyZone = true;
             }
         }
+
+        // 检查是否在圆形内
+        if (mDrawCircle != null) {
+            if (mDrawCircle.contains(latLng)) {
+                isInNoFlyZone = true;
+            }
+        }
+
         return isInNoFlyZone;
     }
 
@@ -794,6 +802,7 @@ public class GaodeMapLayout extends BaseMap {
             return false;
         }
         mDrawCircle.remove();
+        mDrawCircle = null;
         return true;
     }
 }

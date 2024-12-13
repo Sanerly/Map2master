@@ -823,6 +823,13 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
                 isInNoFlyZone = true;
             }
         }
+        // 检查是否在圆形内
+        if (mDrawCircle != null) {
+            LatLng latLng = mDrawCircle.getCenter();
+            if (LocationUtils.getDistance(longitude, latitude, latLng.longitude, latLng.latitude) <= mDrawCircle.getRadius()) {
+                isInNoFlyZone = true;
+            }
+        }
 
         return isInNoFlyZone;
     }
@@ -865,6 +872,7 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
             return false;
         }
         mDrawCircle.remove();
+        mDrawCircle = null;
         return true;
     }
 }
