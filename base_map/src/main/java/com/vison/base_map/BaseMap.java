@@ -42,6 +42,8 @@ public abstract class BaseMap {
     protected OnMapClickListener onMapClickListener;
     protected OnMoveTrackListener onMoveTrackListener;
     private CompassUtils mCompassUtils;
+    protected String mInfoWindowTitle;
+    protected String mInfoWindowMessage;
 
     public BaseMap(Context context, Location location) {
         this.context = context;
@@ -252,6 +254,22 @@ public abstract class BaseMap {
      */
     public BaseMap setOnMoveTrackListener(OnMoveTrackListener onMoveTrackListener) {
         this.onMoveTrackListener = onMoveTrackListener;
+        return this;
+    }
+
+    /**
+     * 设置弹框标题
+     */
+    public BaseMap setInfoWindowTitle(String InfoWindowTitle) {
+        this.mInfoWindowTitle = InfoWindowTitle;
+        return this;
+    }
+
+    /**
+     * 设置弹框内容
+     */
+    public BaseMap setInfoWindowMessage(String InfoWindowMessage) {
+        this.mInfoWindowMessage = InfoWindowMessage;
         return this;
     }
 

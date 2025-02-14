@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setMaxDistance(50)
                 .setOnlyLook(false)
                 .setShowInfoWindow(true)
+                .setInfoWindowTitle("无人机最后飞行位置")
+                .setInfoWindowMessage("经度:%s\n纬度:%s\n距离当前位置有 %sm")
                 .setZoomLevel(22)
                 .setMinZoomLevel(3)
                 .setFillColor(Color.parseColor("#504086FF"))
@@ -98,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .setCompass(false)
                 .setUiSettings(uiSettings);
         mapView.getBaseMap().setMapType(0);
+
+//        aDroneMarker.setTitle("无人机最后飞行位置");
+//        String snippet = String.format("经度:%s\n纬度:%s\n距离当前位置有 %sm", aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude, distance);
+//        aDroneMarker.setTitle("Last flight position of uav");
+//        String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+//        String snippet = String.format("longitude:%s\nlatitude:%s\nfrom your current position %sm", aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude, distance);
+
 
 //        mapView.getBaseMap().setDroneStartPoint(116.75094182128906, 23.494296583496094);
 //        mapView.postDelayed(new Runnable() {

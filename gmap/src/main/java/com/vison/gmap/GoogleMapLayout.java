@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -244,12 +246,20 @@ public class GoogleMapLayout extends BaseMap implements OnMapReadyCallback {
 //                    return true;
 //                }
 //            };
+            if (TextUtils.isEmpty(mInfoWindowTitle)){
+                Log.e("BaseMap","mInfoWindowTitle is null");
+                return;
+            }
+
+            if (TextUtils.isEmpty(mInfoWindowMessage)){
+                Log.e("BaseMap","mInfoWindowMessage is null");
+                return;
+            }
 
             gMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
-            double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude,
-                    aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
-            aDroneMarker.setTitle("Last flight position of uav");
-            String snippet = "longitude:" + aDroneMarker.getPosition().longitude + "\nlatitude:" + aDroneMarker.getPosition().latitude + "\nfrom your current position " + distance + "m";
+            double distance = CoordinateTransformUtil.getDistance(aMyMarker.getPosition().longitude, aMyMarker.getPosition().latitude, aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude);
+            aDroneMarker.setTitle(mInfoWindowTitle);
+            String snippet = String.format(mInfoWindowMessage, aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude, distance);
             aDroneMarker.setSnippet(snippet);
             aDroneMarker.showInfoWindow();
 //            gMap.setOnMarkerClickListener(onMarkerClickListener);

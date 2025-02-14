@@ -3,6 +3,8 @@ package com.vison.amap;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -275,10 +277,21 @@ public class GaodeMapLayout extends BaseMap {
 //                    return true;
 //                }
 //            };
+
+            if (TextUtils.isEmpty(mInfoWindowTitle)){
+                Log.e("BaseMap","mInfoWindowTitle is null");
+                return;
+            }
+
+            if (TextUtils.isEmpty(mInfoWindowMessage)){
+                Log.e("BaseMap","mInfoWindowMessage is null");
+                return;
+            }
+
             aMap.setInfoWindowAdapter(new InfoWindowAdapter(getContext()));
             float distance = AMapUtils.calculateLineDistance(aMyMarker.getPosition(), aDroneMarker.getPosition());
-            aDroneMarker.setTitle("无人机最后飞行位置");
-            String snippet = "经度:" + aDroneMarker.getPosition().longitude + "\n纬度:" + aDroneMarker.getPosition().latitude + "\n距离当前位置有 " + distance + "m";
+            aDroneMarker.setTitle(mInfoWindowTitle);
+            String snippet = String.format(mInfoWindowMessage, aDroneMarker.getPosition().longitude, aDroneMarker.getPosition().latitude, distance);
             aDroneMarker.setSnippet(snippet);
             aDroneMarker.showInfoWindow();
 //            aMap.setOnMarkerClickListener(onMarkerClickListener);
